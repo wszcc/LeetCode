@@ -1,0 +1,19 @@
+.question-index{
+    .body{
+        display: flex;
+        .left{
+            width: 50%;
+        }
+        .right{
+            width: 50%;
+        }
+    }
+}
+.ant-tabs-tab{
+    width: 150px;
+    text-align: center;
+    font-size: 13px;
+}
+.ant-tabs-tab-btn{
+    margin-left: 20px;
+}
