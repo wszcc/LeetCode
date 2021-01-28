@@ -1,20 +1,25 @@
 import React from 'react'
 import { Form, Input, Button, Card } from 'antd'
-
+import { QqOutlined, GithubOutlined, WeiboOutlined, WechatOutlined, EllipsisOutlined } from '@ant-design/icons'
 /* 
-< QqOutlined / >
-< WechatOutlined / >
-< GithubOutlined / >
-< WeiboOutlined / >
-< LinkedinOutlined / >
+<QqOutlined />
+<WechatOutlined />
+<GithubOutlined />
+<WeiboOutlined />
+<LinkedinOutlined />
 */
 import './login.scss'
 const Login = (props) =>{
     const [form] = Form.useForm()
+
+    const changeLoginWay = () => {
+
+    }
+
     return (
         <div className='login'>
             <Card className='login-card'
-                title='账户密码登陆'
+                title='账户密码登录'
                 bordered={false}
             >
                 <Form className='login-card-form' form={form}>
@@ -26,29 +31,39 @@ const Login = (props) =>{
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type='primary'>登陆</Button>
+                        <Button type='primary'>登录</Button>
                         <div className='link-warp'>
-                            <Button type='link'>验证码登陆</Button>
+                            <Button type='link' onClick={changeLoginWay}>验证码登录</Button>
                             <Button type='link'>忘记密码</Button>
                         </div>
 
                     </Form.Item>
                 </Form>
                 <div className='login-card-ways'>
-                    <div className='login-card-ways-item qq'>
-                        <div className='icon-warp'></div>
+                    <div className='login-card-ways-item'>
+                        <div className='icon-warp'>
+                            <QqOutlined className='icon qq'/>
+                        </div>
                     </div>
-                    <div className='login-card-ways-item github'>
-                        <div className='icon-warp'></div>                        
+                    <div className='login-card-ways-item'>
+                        <div className='icon-warp'>
+                            <GithubOutlined className='icon github'/>
+                        </div>                        
                     </div>
-                    <div className='login-card-ways-item sina'>
-                        <div className='icon-warp'></div>
+                    <div className='login-card-ways-item'>
+                        <div className='icon-warp'>
+                            <WeiboOutlined className='icon sina'/>
+                        </div>
                     </div>
-                    <div className='login-card-ways-item wechat'>
-                        <div className='icon-warp'></div>
+                    <div className='login-card-ways-item'>
+                        <div className='icon-warp'>
+                            <WechatOutlined className='icon wechat'/>
+                        </div>
                     </div>
-                    <div className='login-card-ways-item other'>
-                        <div className='icon-warp'></div>
+                    <div className='login-card-ways-item'>
+                        <div className='icon-warp'>
+                            <EllipsisOutlined className='icon other'/>
+                        </div>
                     </div>
                 </div>
 
