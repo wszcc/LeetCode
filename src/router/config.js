@@ -7,23 +7,23 @@ import ResetPassword from '../pages/resetpassword/ResetPassword'
 
 const routerView =[
   {
-    path: "/home",
+    path: "/login",
     component: Login,
   },
   {
-    path: "/topic/detail/:id",
+    path: "/question/:id",
     component: Profile,
   },
   {
-    path: "/profile",
+    path: "/quesionlist",
     component: QuestionList,
   },
   {
-    path: "/theme",
+    path: "/questionindex",
     component: QuestionIndex,
   },
   {
-    path: "/mycollect",
+    path: "/resetpassword",
     component: ResetPassword,
   },
 ];
