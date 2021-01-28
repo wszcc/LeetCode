@@ -11,7 +11,7 @@ const routerView =[
     component: Login,
   },
   {
-    path: "/question/:id",
+    path: "/profile",
     component: Profile,
   },
   {
