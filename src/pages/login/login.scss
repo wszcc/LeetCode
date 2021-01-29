@@ -1,0 +1,89 @@
+.login {
+    width: 384px;
+    height: 462px;
+    position: relative;
+    margin: 30px auto 0 auto;
+    // top: 50%;
+    box-shadow: 0 0 50px 0 gray;
+    border-radius: 10px !important;
+    
+    .login-card {
+        border-radius: 10px !important;
+        .ant-card-head-title {
+            font-size: 28px;
+            font-weight: 500;
+            // line-height: 36px;
+        }
+        .login-card-form {
+            .ant-btn-primary {
+                width: 320px;
+                height: 36px;
+                background: #2db55d;
+                margin: 0 auto 10px auto;
+                display: block;
+            }
+            .link-warp {
+                display: flex;
+                justify-content: space-between;
+                .ant-btn-link {
+                    font-size: 14px;
+                    // line-height: 20px;
+                    color: gray;
+                }
+            }
+
+        }
+        .login-card-ways {
+            display: flex;
+            justify-content: space-around;
+            .icon-warp {
+                width: 36px;
+                height: 36px;
+                border: rgb(196, 196, 196) 1px solid;
+                border-radius: 100%;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .icon {
+                    font-size: 20px;
+                }
+                .qq {
+                    color: rgb(74, 154, 253);
+                }
+                .sina {
+                    color: rgb(233, 14, 36);
+                }
+                .wechat {
+                    color: rgb(0, 202, 0);
+                }
+                .other {
+                    color: gray;
+                }
+            }
+        }
+
+        .login-card-footer {
+            font-size: 12px;
+            color: rgb(190, 187, 187);
+            .login-card-footer-top {
+                text-align: center;
+                margin: 30px 0 10px 0;
+                .sp {
+                    font-size: 13px;
+                    color: gray;
+                    cursor: pointer;
+                }
+            }
+            .login-card-footer-buttom {
+                display: flex;
+                justify-content: center;
+                .item {
+                    margin: 0 5px 0 5px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
