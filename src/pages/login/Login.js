@@ -1,6 +1,19 @@
-import React from 'react'
-import { Form, Input, Button, Card } from 'antd'
-import { QqOutlined, GithubOutlined, WeiboOutlined, WechatOutlined, EllipsisOutlined } from '@ant-design/icons'
+import React, {useState} from 'react'
+import {
+    Form,
+    Input,
+    Button,
+    Card,
+    Select
+} from 'antd'
+import {
+    QqOutlined,
+    GithubOutlined,
+    WeiboOutlined,
+    WechatOutlined,
+    EllipsisOutlined,
+    CaretRightOutlined
+} from '@ant-design/icons'
 /* 
 <QqOutlined />
 <WechatOutlined />
@@ -11,32 +24,50 @@ import { QqOutlined, GithubOutlined, WeiboOutlined, WechatOutlined, EllipsisOutl
 import './login.scss'
 const Login = (props) =>{
     const [form] = Form.useForm()
+    const { Option } = Select;
+    const [isPhoneLogin, setisPhoneLogin] = useState(true)
 
     const changeLoginWay = () => {
-
+        setisPhoneLogin(!isPhoneLogin)
     }
 
     return (
-        <div className='login'>
+        <div className='login' 
+             style={isPhoneLogin ? {height: '514px', margin: '80px auto 0 auto'} : {height: '462px', margin: '100px auto 0 auto'}}
+        >
             <Card className='login-card'
-                title='账户密码登录'
+                title={isPhoneLogin ? '欢迎使用力扣' : '账号密码登录'}
                 bordered={false}
             >
                 <Form className='login-card-form' form={form}>
                     <Form.Item name='username'>
-                        <Input placeholder='手机号/邮箱'/>
+
+                        <Input.Group compact style={{display: `${isPhoneLogin ? 'block' : 'none'}`}}>
+                            <Select style={{ width: '23%' }}defaultValue="Zhejiang">
+                                <Option value="Zhejiang">+86</Option>
+                                <Option value="Jiangsu">+852</Option>
+                            </Select>
+                            <Input style={{ width: '77%' }} placeholder='输入手机号' />
+                        </Input.Group>
+
+                        <Input placeholder='手机号/邮箱'style={{display: `${!isPhoneLogin ? 'block' : 'none'}`}}/>
+
                     </Form.Item>
                     <Form.Item name='passward'>
-                        <Input placeholder='输入密码'/>
+                        <Input placeholder={isPhoneLogin ? '验证码' : '输入密码'}/>
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type='primary'>登录</Button>
+                        <Button type='primary'>{isPhoneLogin ? '登录 / 注册' : '登录'}</Button>
                         <div className='link-warp'>
-                            <Button type='link' onClick={changeLoginWay}>验证码登录</Button>
-                            <Button type='link'>忘记密码</Button>
+                            <Button type='link' onClick={changeLoginWay}>
+                                {isPhoneLogin ? '账号密码登录' : '验证码登录'}
+                            </Button>
+                            <Button type='link'>{isPhoneLogin ? '邮箱注册' : '忘记密码'}</Button>
                         </div>
-
+                        <div className='us-user-login' 
+                             style={{display: `${isPhoneLogin ? 'block' : 'none'}`}}
+                        >已有美国站账号&nbsp;{<CaretRightOutlined />}</div>
                     </Form.Item>
                 </Form>
                 <div className='login-card-ways'>

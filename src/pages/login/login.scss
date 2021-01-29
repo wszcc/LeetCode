@@ -1,8 +1,5 @@
 .login {
     width: 384px;
-    height: 462px;
-    position: relative;
-    margin: 30px auto 0 auto;
     // top: 50%;
     box-shadow: 0 0 50px 0 gray;
     border-radius: 10px !important;
@@ -31,7 +28,11 @@
                     color: gray;
                 }
             }
-
+            .us-user-login {
+                text-align: center;
+                color: gray;
+                margin-top: 30px;
+            }
         }
         .login-card-ways {
             display: flex;
