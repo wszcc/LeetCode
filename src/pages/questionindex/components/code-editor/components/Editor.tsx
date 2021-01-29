@@ -71,7 +71,7 @@ const CodeEditor: FC<Config> = ({ fontSize, theme, indent }) => {
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
       }}
       onChange={(editor, data, value) => {
-
+        
       }}
       onBeforeChange={(...arr) => {
         setValue(arr[2])
