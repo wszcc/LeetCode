@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch } from 'redux'
 import { RootState } from '../store'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/addon/display/autorefresh';
@@ -26,6 +27,8 @@ import 'codemirror/addon/comment/comment'
 import 'codemirror/keymap/sublime'
 import 'codemirror/addon/edit/closebrackets.js'//自动括号
 import { connect } from 'react-redux';
+import { debounce, storage } from '../../../../../utils/shared'
+import { actSaveCode } from '../store/actions';
 
 const Default_Java_Code = `class Solution {
 	int main() {
@@ -37,21 +40,24 @@ const Default_Java_Code = `class Solution {
 interface Config {
   fontSize: number,
   theme: "dark" | "light",
-  indent: number
+  indent: number,
+  code: string,
+  dispatch: Dispatch
 }
 
-const CodeEditor: FC<Config> = ({ fontSize, theme, indent }) => {
+const CodeEditor: FC<Config> = ({ fontSize, theme, indent, code, dispatch }) => {
   const editor = useRef<CodeMirror>(null)
-  const [value, setValue] = useState(Default_Java_Code)
+  
   useEffect(() => {
     const $editor = (editor.current as any).editor
     $editor.setSize('100%', '100%')
-  })
+  }, [])
+
   return (
     <CodeMirror
       className={"font-size-" + fontSize + " editor"}
       ref={editor}
-      value={value}
+      value={code}
       options={{
         mode: {
           name: "text/x-java"
@@ -70,11 +76,8 @@ const CodeEditor: FC<Config> = ({ fontSize, theme, indent }) => {
         foldGutter: true,
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
       }}
-      onChange={(editor, data, value) => {
-        
-      }}
       onBeforeChange={(...arr) => {
-        setValue(arr[2])
+        dispatch(actSaveCode(arr[2]))
       }}
       onInputRead={(cm, change) => {
         cm.setOption('hintOptions', {

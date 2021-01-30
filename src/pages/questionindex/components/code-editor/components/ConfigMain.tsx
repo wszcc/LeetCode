@@ -109,6 +109,7 @@ export default connect(
   (state: RootState) => ({
     fontSize: state.editorConfig.fontSize,
     indent: state.editorConfig.indent,
-    theme: state.editorConfig.theme
+    theme: state.editorConfig.theme,
+    code: state.editorConfig.code
   })
 )(ConfigMain)

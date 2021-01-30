@@ -1,16 +1,29 @@
 import { memo, useState, useRef, useEffect } from "react"
 import ShowModal from '../../../../../components/showModal'
 import ConfigMain from "./ConfigMain"
-import { SettingOutlined, ExpandOutlined } from '@ant-design/icons'
-import { Tooltip } from 'antd'
+import { SettingOutlined, ExpandOutlined, RetweetOutlined } from '@ant-design/icons'
+import { Tooltip, Modal } from 'antd'
+import { useConfirm } from "../../../../../utils/hooks"
+
+const {confirm} = Modal
 
 const ConfigBar = () => {
   const open = useRef<(...args: any) => any>(null)
-
+  const confirm = useConfirm()
+  const resetCode = () => {
+    confirm()
+  }
   return (
     <div className="head-bar flex j-between">
-      <div></div>
+      <div>
+        java
+      </div>
       <div className="config-bar flex a-center">
+        <div className="i-config" onClick={resetCode}>
+          <Tooltip placement="bottom" title="重置为默认代码">
+            <RetweetOutlined />
+          </Tooltip>
+        </div>
         <ShowModal
           className="editor-configer"
           title="代码编辑器设置"
