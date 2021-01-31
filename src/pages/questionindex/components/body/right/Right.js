@@ -1,17 +1,17 @@
-import React,{useEffect} from 'react'
-import E from 'wangeditor'
 import CodeEditor from '../../code-editor'
 
-const Right = (props) =>{
-    useEffect(()=>{
-        // const editor = new E('#div1')
-        // editor.create()
-    },[])
-    return <div className='left'>
-        <div id='div1'>
-          <CodeEditor/>
-        </div>
+const Right = (props) => {
+  const width = props
+
+  return <div className='right' style={{
+    height: "calc(100vh - 45px)",
+    display: "flex",
+    flexDirection: "column"
+  }}>
+    <div id='div1' style={{ height: "100%" }}>
+      <CodeEditor />
     </div>
+  </div>
 }
 
 export default Right

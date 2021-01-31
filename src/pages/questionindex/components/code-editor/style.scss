@@ -35,7 +35,7 @@
 .head-bar {
   background-color: rgb(247, 247, 247);
   width: 100%;
-  height: 32px;
+  height: 5%;
 
   .config-bar {
     .i-config {
@@ -87,6 +87,10 @@
 
 .editor-configer {
   width: 600px !important;
+}
+
+.editor {
+  height: 95%;
 }
 
 .theme-light {
