@@ -3,9 +3,10 @@ import { storage } from '../utils/shared'
 
 type PendingQueue = ((...args: any) => void)[]
 
-const BASE_URL = 'http://47.107.90.201:8080'
+// const BASE_URL = 'http://47.107.90.201:8080'
+const BASE_URL = 'http://localhost:3000/api'
 
-const CONNECT_LIMIT = 1 // 最大网络连接数
+const CONNECT_LIMIT = 6 // 最大网络连接数
 const TIMEOUT = 1000 * 10 //最大请求到期时间 10s
 
 let retryNum = 0
@@ -157,7 +158,10 @@ request.interceptors.response.use(
         data: res.data
       }
     }
-    return res
+    return {
+      ...res,
+      token: res.headers.token
+    }
   }
 )
 
@@ -198,7 +202,6 @@ async function refreshToken() {
     lastModified = now()
   }
 }
-
 
 function block() {
   return new Promise((resolve, reject) => {

@@ -28,7 +28,7 @@ export const useConfirm = (msg: string = "你确定吗", title: string = "确定
       okText: "确定",
       cancelText: "取消",
       okButtonProps: {
-        className: "theme-light"
+        type: "text"
       }
     })
   }

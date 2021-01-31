@@ -1,9 +1,10 @@
-import { Modal } from "antd";
-import { FC } from "react";
-
 export interface LooseObj {
   [K: string]: any
 }
+export interface LooseFn {
+  (...args: any): any
+}
+export type NoUndef = number | string | Symbol | LooseFn | LooseFn | boolean
 
 export const storage = {
   get(key: string) {
@@ -45,14 +46,35 @@ export const Float = (str: string): number => {
   return parseFloat(str)
 }
 
-export function debounce<T extends any[]>(fn: (...args: T) => any, ms: number = 1000) {
+export function debounce<T extends any[]>(this: any, fn: (...args: T) => any, ms: number = 1000) {
   let timer: number | null = null
+  const ctx = this
   return (...args: T) => {
     if (timer) {
       clearTimeout(timer)
     }
     timer = window.setTimeout(() => {
-      fn(...args)
+      fn.apply(ctx, args)
     }, ms)
   }
+}
+
+export const delay = <T>(val: T, ms = 0): Promise<T> => new Promise(resolve =>
+  setTimeout(resolve.bind(null, val), ms))
+
+export const repeat = (fn: LooseFn, times = 1): void => {
+  if (times < 0) return
+  while (times--) {
+    fn()
+  }
+}
+
+export const repeatMap = <T>(fn: (i: number) => T, times = 0): T[] => {
+  const res: T[] = new Array(times);
+  let i = 0;
+  while (i < times) {
+    res[i] = fn(i)
+    i++
+  }
+  return res
 }
