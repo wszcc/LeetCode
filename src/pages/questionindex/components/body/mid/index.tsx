@@ -27,7 +27,6 @@ const MidDragBar: FC<Props> = ({ setWidth }) => {
         takeUntil(mouseUp$)
       )),
     ).subscribe(val => {
-      console.log(val);
       setWidth(val)
     })
 

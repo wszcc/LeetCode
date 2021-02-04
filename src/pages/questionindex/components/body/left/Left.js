@@ -12,7 +12,7 @@ const Left = (props) => {
   const { width } = props
   return (
     <div className="left" style={{
-      width: width ? width + "px" : "49.5vw"
+      width: width ? Math.max(width, 300) + "px" : "49.5vw"
     }}>
       <Tabs onChange={callback} type="card">
         <TabPane tab="题目描述" key="1">
