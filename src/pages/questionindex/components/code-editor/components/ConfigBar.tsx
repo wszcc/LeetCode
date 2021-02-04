@@ -1,18 +1,25 @@
-import { memo, useState, useRef, useEffect } from "react"
+import { useRef, FC } from "react"
 import ShowModal from '../../../../../components/showModal'
 import ConfigMain from "./ConfigMain"
 import { SettingOutlined, ExpandOutlined, RetweetOutlined } from '@ant-design/icons'
 import { Tooltip, Modal } from 'antd'
 import { useConfirm } from "../../../../../utils/hooks"
+import { connect } from "react-redux"
+import {Dispatch} from 'redux'
+import { actSaveCode } from "../store/actions"
+import { Default_Java_Code } from "../../../../../config/code"
+interface P{
+  dispatch: Dispatch
+}
 
-const {confirm} = Modal
-
-const ConfigBar = () => {
+const ConfigBar: FC<P> = ({dispatch}) => {
   const open = useRef<(...args: any) => any>(null)
-  const confirm = useConfirm()
-  const resetCode = () => {
-    confirm()
-  }
+  const resetCode = useConfirm({
+    onOk() {
+      dispatch(actSaveCode(Default_Java_Code))
+    }
+  })
+
   return (
     <div className="head-bar flex j-between">
       <div>
@@ -45,4 +52,4 @@ const ConfigBar = () => {
   )
 }
 
-export default memo(ConfigBar)
+export default connect()(ConfigBar)
