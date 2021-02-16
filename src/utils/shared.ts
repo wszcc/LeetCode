@@ -78,3 +78,18 @@ export const repeatMap = <T>(fn: (i: number) => T, times = 0): T[] => {
   }
   return res
 }
+
+
+/**下面全是为了reducer中的类型推导 */
+export const createAction = <T, P>(type: T, data: P = null as any) => ({type, data: data})
+
+type Type<T> = { [K in keyof T]: K }
+export function createTypes<T>(enumTypes: T, prefix = ""): Type<T> {
+  return new Proxy(enumTypes as any, {
+    get(target, key) {
+      return prefix + target[key]
+    }
+  })
+}
+
+export type mapActions<Actions extends { [k: string]: () => any }> = ReturnType<Actions[keyof Actions]>

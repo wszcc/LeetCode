@@ -2,7 +2,7 @@ import { useRef, FC } from "react"
 import ShowModal from '../../../../../components/showModal'
 import ConfigMain from "./ConfigMain"
 import { SettingOutlined, ExpandOutlined, RetweetOutlined } from '@ant-design/icons'
-import { Tooltip, Modal } from 'antd'
+import { Tooltip } from 'antd'
 import { useConfirm } from "../../../../../utils/hooks"
 import { connect } from "react-redux"
 import {Dispatch} from 'redux'

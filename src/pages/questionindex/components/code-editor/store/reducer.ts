@@ -1,6 +1,6 @@
+import { Default_Java_Code } from '../../../../../config/code';
 import { debounce, Int, storage } from '../../../../../utils/shared';
 import { Actions, Types } from './actions'
-
 interface EditorConfig {
   theme: "dark" | "light",
   indent: 2 | 4,
@@ -8,12 +8,6 @@ interface EditorConfig {
   code: string
 }
 
-const Default_Java_Code = `class Solution {
-	int main() {
-		
-		return 0;
-	}
-}`;
 const autoSaveCode = debounce((code: string) => {
   storage.set("editor-code", code)
 }, 1000)

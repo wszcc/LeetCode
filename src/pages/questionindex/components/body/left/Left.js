@@ -1,7 +1,8 @@
-import React from "react";
 import { Tabs } from "antd";
 import Desc from './desc/Desc'
 import SubmitRecord from "./submitrecord/SubmitRecord";
+import Comment from './components/comment'
+
 const { TabPane } = Tabs;
 
 function callback(key) {
@@ -19,7 +20,7 @@ const Left = (props) => {
           <Desc />
         </TabPane>
         <TabPane tab="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评论" key="2">
-          评论
+          <Comment />
         </TabPane>
         <TabPane tab="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题解" key="3">
           题解

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './body.scss'
 import Right from './right/Right'
 import Left from './left/Left'

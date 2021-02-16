@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react'
 import { fromEvent } from 'rxjs';
-import { map, mapTo, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 interface Props {
   setWidth: Dispatch<SetStateAction<number>>

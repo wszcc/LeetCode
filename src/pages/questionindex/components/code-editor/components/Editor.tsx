@@ -27,9 +27,7 @@ import 'codemirror/addon/comment/comment'
 import 'codemirror/keymap/sublime'
 import 'codemirror/addon/edit/closebrackets.js'//自动括号
 import { connect } from 'react-redux';
-import { debounce, storage } from '../../../../../utils/shared'
 import { actSaveCode } from '../store/actions';
-import {Default_Java_Code} from '../../../../../config/code'
 
 interface Config {
   fontSize: number,
