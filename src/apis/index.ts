@@ -70,15 +70,16 @@ request.interceptors.request.use(
       contentType: 'application/json;charset=utf-8',
     }
     return config
+  },
+  err => {
+    console.log(err); /**正常情况应该永远不会出现这里 */
   }
 )
 
 request.interceptors.response.use(
   async res => {
-    console.log("receive");
-    
     try {
-      if (res.data.error_code === ErrorCode.Token_Expire_Code) {
+      if (res.data.code === ErrorCode.Token_Expire_Code) {
         /**
          *  token过期有两种情况
          *  1.第一次过期, 重新请求token并且重新发送请求，将新的结果返回
@@ -91,9 +92,9 @@ request.interceptors.response.use(
           try {
             console.log('refresh tk');
             await refreshToken()
-            message.info("自动登陆成功^_^")
+            message.info("自动登陆成功")
           } catch (e) { //连refreshToken也失效了，需要重新登陆了
-            message.info("需要重新登陆-_-|")
+            message.info("需要重新登陆")
             storage.clear()
             return e
           }
@@ -120,8 +121,8 @@ request.interceptors.response.use(
           return {
             ...err,
             data: {
-              message: "未登陆",
-              error_code: ErrorCode.No_Token
+              message: "未登录",
+              code: ErrorCode.No_Token
             }
           }
         }
@@ -129,7 +130,7 @@ request.interceptors.response.use(
           ...err,
           data: {
             message: err.data.message,
-            error_code: ErrorCode.Abort
+            code: ErrorCode.Abort
           }
         }
       }
@@ -138,7 +139,7 @@ request.interceptors.response.use(
         ...err,
         data: {
           message: "网络异常",
-          error_code: ErrorCode.Connect_Fail
+          code: ErrorCode.Connect_Fail
         }
       }
     } finally {
@@ -150,7 +151,7 @@ request.interceptors.response.use(
 
 request.interceptors.response.use(
   res => {
-    switch (res.data.error_code) {
+    switch (res.data.code) {
       case ErrorCode.HasBeenUsed:
       case ErrorCode.Success: {
         return res.data
@@ -158,7 +159,7 @@ request.interceptors.response.use(
       default:
         message.info(res.data.message)
         return {
-          error_code: res.data.error_code,
+          code: res.data.code,
           message: res.data.message,
           data: res.data
         }
@@ -178,11 +179,10 @@ async function refreshToken() {
       }
     })
     if (!res.data.data && !res.data.data.token && !res.data.data.refreshToken) {
-      console.log('refresh fail');
       throw {
         ...res,
         data: {
-          error_code: ErrorCode.RefreshToken_Expire_Code
+          code: ErrorCode.RefreshToken_Expire_Code
         }
       }
     }
@@ -193,7 +193,7 @@ async function refreshToken() {
     throw {
       ...error,
       data: {
-        error_code: ErrorCode.RefreshToken_Expire_Code
+        code: ErrorCode.RefreshToken_Expire_Code
       }
     }
   } finally {
@@ -215,7 +215,6 @@ function block() {
 
 function send() {
   if (!isRefreshing && pendingQueue.length) {
-    console.log('resolve one');
     const resolve = pendingQueue.shift()!
     resolve(undefined)
   }

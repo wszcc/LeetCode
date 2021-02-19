@@ -4,10 +4,12 @@
         height: 100%;
         .left{
             width: 49.5vw;
+            height: calc(100vh - 45px);
+            overflow-y: scroll;
         }
         .mid-drag-bar {
             width: 1vw;
-            height: calc(100vh - 45px);
+            // height: calc(100% - 45px);
             background-color: rgb(223, 223, 223);
             flex-shrink: 0;
             transition: .5s;

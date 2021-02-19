@@ -1,5 +1,6 @@
 .comment-item {
   font-size: 12px;
+  padding: 12px;
 
   .header-avatar {
     font-size: 14px;
@@ -37,9 +38,13 @@
   }
 }
 .sub {
-  padding: 15px;
+  padding: 0 15px;
 
   .editor {
     height: 5em;
+  }
+
+  .sub-comment{
+    border: 1px solid rgb(233, 233, 233);
   }
 }

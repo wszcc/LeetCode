@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from "react";
+import { FC, memo, useEffect, useRef, useState } from "react";
 import Editor from "../../mdEditor";
 import {
   LikeOutlined,
@@ -8,18 +8,19 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import "../style.scss";
-import { getReply } from "../../../../../../../../apis/comments";
+import { getReply, sendComment } from "../../../../../../../../apis/comments";
 import { ErrorCode } from "../../../../../../../../apis";
 import { wrapRequest } from "../../../../../../../../utils/hooks";
-import { Flags } from "../../../../../../../../utils/shared";
+import { Flags, storage } from "../../../../../../../../utils/shared";
 interface P {
   userName: string;
   avatar: string;
   content: string;
   likeNum: number;
-  parentId: number;
+  parentId: string;
   commentTime: string | null;
-  islike: boolean;
+  commentId: string;
+  islike: number;
   replyNum?: number;
   isRoot?: boolean;
 }
@@ -29,11 +30,11 @@ interface Sub {
   content: string;
   nickname: string;
   avatar: string;
-  userId: number;
-  commentId: number;
+  userId: string;
+  commentId: string;
   commentTime: null | string;
   thumbup: null | number;
-  islike: boolean;
+  islike: number;
 }
 
 const Common: FC<P> = ({
@@ -44,6 +45,7 @@ const Common: FC<P> = ({
   userName,
   avatar,
   likeNum,
+  commentId,
   islike,
   isRoot = true,
 }) => {
@@ -51,13 +53,13 @@ const Common: FC<P> = ({
   const [visible, setVisible] = useState(false);
   const [showSub, setShowSub] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
-
-  console.log(subLoading);
+  const editor = useRef<{
+    getContent(): string;
+  }>(null);
 
   const queryReply = async () => {
-    console.log("send");
-
     setShowSub(!showSub);
+    if (sub.length) return;
     if (showSub) return;
     setSubLoading(true);
     const res = await getReply(parentId);
@@ -65,6 +67,16 @@ const Common: FC<P> = ({
     if (res.code === ErrorCode.Success) {
       setSub(res.data);
     }
+  };
+
+  const dispatchComment = async () => {
+    console.log(editor.current?.getContent()!);
+    
+    const res = await sendComment(
+      parentId,
+      storage.get("userId")!,
+      editor.current?.getContent()!
+    );
   };
 
   return (
@@ -80,7 +92,7 @@ const Common: FC<P> = ({
         <div className="item-content">{content}</div>
         <div className="item-footer  flex ">
           <div>
-            {islike ? <LikeFilled /> : <LikeOutlined />}
+            {islike === 1 ? <LikeFilled /> : <LikeOutlined />}
             {likeNum}
           </div>
           {isRoot && (
@@ -96,13 +108,21 @@ const Common: FC<P> = ({
         </div>
       </div>
       <div className="sub">
-        <div className="edit">{visible && <Editor />}</div>
-        <a href="/#anchor"></a>
-        {isRoot && showSub && !subLoading ? (
+        <div className="edit">
+          {visible && (
+            <Editor
+              ref={editor}
+              onSubmit={dispatchComment}
+              mentionName={userName}
+            />
+          )}
+        </div>
+        {isRoot && showSub && (
           <div className="sub-comment">
-            {sub.map((item) => {
+            {sub.map((item, i) => {
               return (
                 <Common
+                  key={i}
                   userName={item.nickname}
                   avatar={item.avatar}
                   parentId={parentId}
@@ -110,14 +130,16 @@ const Common: FC<P> = ({
                   likeNum={item.thumbup ? item.thumbup : 0}
                   content={item.content}
                   commentTime={item.commentTime}
+                  commentId={item.commentId}
                   isRoot={false}
                 />
               );
             })}
-          </div>
-        ) : (
-          <div style={{ textAlign: "center" }}>
-            <LoadingOutlined />
+            {subLoading && (
+              <div style={{ textAlign: "center" }}>
+                <LoadingOutlined />
+              </div>
+            )}
           </div>
         )}
       </div>

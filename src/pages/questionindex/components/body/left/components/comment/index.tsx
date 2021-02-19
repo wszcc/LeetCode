@@ -11,9 +11,10 @@ const Comment = () => (
       content="hello world"
       likeNum={1234}
       replyNum={18}
-      parentId={1}
+      parentId={"1"}
       commentTime="2010/1/15"
-      islike={true}
+      commentId={"d"}
+      islike={0}
     />
   </Provider>
 );
