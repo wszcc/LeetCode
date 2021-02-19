@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import './App.scss'
 import RouterView from "./router/index";
 const App: FC = () => (

@@ -1,8 +1,6 @@
 import CodeEditor from '../../code-editor'
 
-const Right = (props) => {
-  const width = props
-
+const Right = () => {
   return <div className='right' style={{
     height: "calc(100vh - 45px)",
     display: "flex",

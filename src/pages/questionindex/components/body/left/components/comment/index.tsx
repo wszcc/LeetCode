@@ -5,7 +5,16 @@ import Common from "./components/Common";
 
 const Comment = () => (
   <Provider store={store}>
-    <Common />
+    <Common
+      userName="fy"
+      avatar=""
+      content="hello world"
+      likeNum={1234}
+      replyNum={18}
+      parentId={1}
+      commentTime="2010/1/15"
+      islike={true}
+    />
   </Provider>
 );
 

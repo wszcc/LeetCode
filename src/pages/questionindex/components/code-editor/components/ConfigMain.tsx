@@ -1,9 +1,9 @@
 import { Dropdown, Menu } from 'antd'
 import { FC } from 'react'
 import { connect } from 'react-redux'
-import { Action, Dispatch } from 'redux'
+import {  Dispatch } from 'redux'
 import { RootState } from '../store'
-import { Actions, actFontSize, actIndent, actTheme } from '../store/actions'
+import { actFontSize, actIndent, actTheme } from '../store/actions'
 import { initState } from '../store/reducer'
 import { DownOutlined } from '@ant-design/icons'
 
@@ -38,7 +38,6 @@ const configs: {
   ]
 
 const ConfigMain: FC<Props> = (props) => {
-  const { fontSize, theme, indent, dispatch } = props
   return (
     <div className="config-main">
       {
@@ -97,7 +96,7 @@ const EachConfig: FC<ConfigProps> = (props) => {
         placement="bottomCenter"
       >
         <div className="config-dropdown flex j-between a-center">
-          <a>{props[keyword as "fontSize" | "theme" | "indent"]}</a>
+          <a href="/#">{props[keyword as "fontSize" | "theme" | "indent"]}</a>
           <DownOutlined />
         </div>
       </Dropdown>

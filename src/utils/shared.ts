@@ -93,3 +93,10 @@ export function createTypes<T>(enumTypes: T, prefix = ""): Type<T> {
 }
 
 export type mapActions<Actions extends { [k: string]: () => any }> = ReturnType<Actions[keyof Actions]>
+
+export enum Flags {
+  Success = "success",
+  Fail = "fail",
+  Pending = "pending",
+  Normal = "normal"
+}

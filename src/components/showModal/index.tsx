@@ -39,7 +39,7 @@ const ShowModal = forwardRef((props: Props, ref) => {
   useImperativeHandle(ref, () => ({
     open: setVisible.bind(null, true),
     close: setVisible.bind(null, false),
-  }), [ref, setVisible])
+  }), [ setVisible])
 
   const click = () => {
     setVisible(!visible)

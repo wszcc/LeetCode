@@ -33,7 +33,7 @@ const MidDragBar: FC<Props> = ({ setWidth }) => {
     return () => {
       sup.unsubscribe()
     }
-  }, [])
+  }, [setWidth])
 
   return (
     <div ref={mid} className="mid-drag-bar"></div>

@@ -1,16 +1,13 @@
 import axios from 'axios'
+import { message } from 'antd'
 import { storage } from '../utils/shared'
 
 type PendingQueue = ((...args: any) => void)[]
 
-// const BASE_URL = 'http://47.107.90.201:8080'
 const BASE_URL = 'http://localhost:3000/api'
 
 const CONNECT_LIMIT = 6 // 最大网络连接数
 const TIMEOUT = 1000 * 10 //最大请求到期时间 10s
-
-let retryNum = 0
-const MAX_RETRY_NUM = 5
 
 export enum ErrorCode {
   Token_Expire_Code = 430,
@@ -18,14 +15,13 @@ export enum ErrorCode {
   No_Token = 425,
   Abort = 16625,
   Connect_Fail = 16626,
-  Succes = 200
+  Success = 200,
+  UserIdOrPasswordWrong = 435,
+  HasBeenUsed = 410
 }
 let now = window.performance
   ? () => performance.now()
   : () => Date.now();
-const Concurrent_Timing = 2
-
-let lastModified = 0
 
 /** 当前请求数 */
 let requestNum = 0
@@ -34,6 +30,7 @@ let isRefreshing = false
 
 /** 不需要token的请求 */
 const whiteList = new Set([
+  'http://wthrcdn.etouch.cn/',
   '/user/resetToken',
   '/user/login',
   '/user/register',
@@ -44,6 +41,7 @@ const whiteList = new Set([
   '/user/findBackPassword',
   '/user/checkUserLegality',
   '/token',
+  '/course/queryCourse'
 ])
 
 const request = axios.create({
@@ -57,24 +55,19 @@ request.interceptors.request.use(
       config.cancelToken = new axios.CancelToken(c => c())
       return config
     }
-    console.log('isRefreshing' + isRefreshing);
-    console.log('requestNum' + requestNum);
 
     if (!config.headers.priority && (isRefreshing || requestNum >= CONNECT_LIMIT)) { //如果正在请求新的token，代表当前token是过期了的
       try {
         await block() //等待前面的请求完
       } catch (e) {//这里表示等待时间过长, 仍然取消请求
         config.cancelToken = new axios.CancelToken(c => c())
+        config.data.message = '超时'
         return config
       }
     }
-    requestNum++
     config.headers = {
       token: storage.get("token") || "",
       contentType: 'application/json;charset=utf-8',
-    }
-    config.data = {
-      userId: storage.get('userId') || ''
     }
     return config
   }
@@ -82,6 +75,8 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   async res => {
+    console.log("receive");
+    
     try {
       if (res.data.error_code === ErrorCode.Token_Expire_Code) {
         /**
@@ -89,23 +84,26 @@ request.interceptors.response.use(
          *  1.第一次过期, 重新请求token并且重新发送请求，将新的结果返回
          *  2.并发请求中，全部过期，但是刚才有一个请求已经检测到过期，
          *    于是已经重新获取token了，需要将这个请求重新发送
-         *  两种情况的判定：通过最近一次刷新token的时间（lastModified）来确定
+         *  两种情况的判定：通过isRefreshing来确定
          */
-        console.log(now() - lastModified > Concurrent_Timing);
-
-        if (now() - lastModified > Concurrent_Timing) { //第一次过期
+        if (!isRefreshing) { //第一次过期
+          message.info("亲很久没有登陆了，尝试自动登录中...")
           try {
             console.log('refresh tk');
-            await refreshToken() //这里也会发一个请求，因此请求数+1了，因此这个函数最后会让请求数-1
+            await refreshToken()
+            message.info("自动登陆成功^_^")
           } catch (e) { //连refreshToken也失效了，需要重新登陆了
+            message.info("需要重新登陆-_-|")
             storage.clear()
             return e
           }
+        } else {
+          await block()
+          console.log('re send after get new tk');
         }
-        requestNum--
-        //返回新的请求,舍弃之前的请求
+        res.config.headers.priority = 1 //以高优先级立即重新去请求结果
+        //返回新的请求
         const newRes = await request.request(res.config)
-        console.log(newRes);
         return newRes
       }
       return res
@@ -130,7 +128,7 @@ request.interceptors.response.use(
         return {
           ...err,
           data: {
-            message: '请求取消',
+            message: err.data.message,
             error_code: ErrorCode.Abort
           }
         }
@@ -152,15 +150,18 @@ request.interceptors.response.use(
 
 request.interceptors.response.use(
   res => {
-    if (res.data.error_code && res.data.error_code !== ErrorCode.Succes) {
-      throw {
-        message: res.data.message,
-        data: res.data
+    switch (res.data.error_code) {
+      case ErrorCode.HasBeenUsed:
+      case ErrorCode.Success: {
+        return res.data
       }
-    }
-    return {
-      ...res,
-      token: res.headers.token
+      default:
+        message.info(res.data.message)
+        return {
+          error_code: res.data.error_code,
+          message: res.data.message,
+          data: res.data
+        }
     }
   }
 )
@@ -173,7 +174,7 @@ async function refreshToken() {
       refreshToken
     }, {
       headers: {
-        priority: 1 //刷新token是高权限请求可以不用阻塞直接插队
+        priority: 1 //刷新token是高权限请求可以在请求拦截器中直接插队执行
       }
     })
     if (!res.data.data && !res.data.data.token && !res.data.data.refreshToken) {
@@ -197,9 +198,6 @@ async function refreshToken() {
     }
   } finally {
     isRefreshing = false
-    /** 这里也会发一个请求，因此请求数+1了，因此这个函数最后会让请求数-1 */
-    requestNum--
-    lastModified = now()
   }
 }
 
@@ -216,10 +214,17 @@ function block() {
 }
 
 function send() {
-  if (pendingQueue.length) {
+  if (!isRefreshing && pendingQueue.length) {
+    console.log('resolve one');
     const resolve = pendingQueue.shift()!
     resolve(undefined)
   }
 }
 
 export default request
+
+export interface Response<T = any> {
+  code: number,
+  message: string,
+  data: T
+}
