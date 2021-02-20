@@ -1,17 +1,21 @@
 import request, { Response } from './index'
 
-export const queryComments = (pageNum: number, parentId: number) => request.post("/comment/get", {
+export interface Comment {
+  "commentId": string,
+  "content": string,
+  "userId": string,
+  "nickname": string,
+  "avatar": string,
+  "commentTime": string,
+  "thumbup": 0 | 1,
+  "replyNum": number | null,
+  "islike": number
+}
+
+export const queryComments = (pageNum: number, parentId: string) => request.post("/comment/get", {
   pageNum, parentId
 }) as Promise<Response<{
-  "g": {
-    "commentId": string,
-    "content": string,
-    "userId": string,
-    "nickname": string,
-    "avatar": string,
-    "commentTime": string,
-    "thumbup": 0 | 1
-  }[],
+  "g": Comment[],
   "totalPage": number
 }>>
 
