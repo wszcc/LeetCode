@@ -99,6 +99,7 @@ export enum Flags {
   Fail = "fail",
   Pending = "pending",
   Normal = "normal"
+<<<<<<< HEAD
 }
 
 // 根据传入的时间获取多少时间前发布的
@@ -157,4 +158,6 @@ export const getKeys: GetKeys<Item> = (dataArr: (Item[])) => {
       item.word = 'Java'
     })
   return dataArr
+=======
+>>>>>>> 6a27625ed4ccda8095e79060b34b87810c1a3da8
 }
