@@ -10,14 +10,18 @@ const CONNECT_LIMIT = 6 // 最大网络连接数
 const TIMEOUT = 1000 * 10 //最大请求到期时间 10s
 
 export enum ErrorCode {
-  Token_Expire_Code = 430,
-  RefreshToken_Expire_Code = 432,
-  No_Token = 425,
-  Abort = 16625,
-  Connect_Fail = 16626,
   Success = 200,
-  UserIdOrPasswordWrong = 435,
-  HasBeenUsed = 410
+  BadRequest = 400, /**参数类型或者字段错误，只展示给我们开发者看，我会log到控制台 */
+  UnAuthorized = 401,
+  Abort = 520,
+  Connect_Fail = 1314, /**由于用户网络断了等特殊情况导致的请求失败 */
+}
+const CodeMap = {
+  [ErrorCode.Success]: "请求成功",
+  [ErrorCode.UnAuthorized]: "请登陆",
+  [ErrorCode.Connect_Fail]: "网络连接失败",
+  [ErrorCode.BadRequest]: "出现未知异常",
+  [ErrorCode.Abort]: "请求取消"
 }
 let now = window.performance
   ? () => performance.now()
@@ -30,7 +34,6 @@ let isRefreshing = false
 
 /** 不需要token的请求 */
 const whiteList = new Set([
-  'http://wthrcdn.etouch.cn/',
   '/user/resetToken',
   '/user/login',
   '/user/register',
@@ -72,41 +75,14 @@ request.interceptors.request.use(
     return config
   },
   err => {
-    console.log(err); /**正常情况应该永远不会出现这里 */
+    console.log('异常未知情况造成的错误'); /**正常情况应该永远不会出现这里 */
+    console.log(err);
   }
 )
 
 request.interceptors.response.use(
   async res => {
     try {
-      if (res.data.code === ErrorCode.Token_Expire_Code) {
-        /**
-         *  token过期有两种情况
-         *  1.第一次过期, 重新请求token并且重新发送请求，将新的结果返回
-         *  2.并发请求中，全部过期，但是刚才有一个请求已经检测到过期，
-         *    于是已经重新获取token了，需要将这个请求重新发送
-         *  两种情况的判定：通过isRefreshing来确定
-         */
-        if (!isRefreshing) { //第一次过期
-          message.info("亲很久没有登陆了，尝试自动登录中...")
-          try {
-            console.log('refresh tk');
-            await refreshToken()
-            message.info("自动登陆成功")
-          } catch (e) { //连refreshToken也失效了，需要重新登陆了
-            message.info("需要重新登陆")
-            storage.clear()
-            return e
-          }
-        } else {
-          await block()
-          console.log('re send after get new tk');
-        }
-        res.config.headers.priority = 1 //以高优先级立即重新去请求结果
-        //返回新的请求
-        const newRes = await request.request(res.config)
-        return newRes
-      }
       return res
     } finally {
       requestNum--
@@ -122,7 +98,7 @@ request.interceptors.response.use(
             ...err,
             data: {
               message: "未登录",
-              code: ErrorCode.No_Token
+              code: ErrorCode.UnAuthorized
             }
           }
         }
@@ -150,56 +126,27 @@ request.interceptors.response.use(
 )
 
 request.interceptors.response.use(
-  res => {
-    switch (res.data.code) {
-      case ErrorCode.HasBeenUsed:
+  (res: any) => {
+    const code = res.data.code as ErrorCode
+
+    switch (code) {
       case ErrorCode.Success: {
+        const newTK = res.headers.token
+        if (newTK && newTK !== res.config.headers.token) {
+          storage.set("token", res.headers.token)
+        }
         return res.data
       }
       default:
-        message.info(res.data.message)
+        message.info(CodeMap[code])
         return {
-          code: res.data.code,
+          code: code,
           message: res.data.message,
-          data: res.data
+          data: null
         }
     }
   }
 )
-
-async function refreshToken() {
-  try {
-    isRefreshing = true
-    const refreshToken = storage.get('refreshToken')
-    const res = await request.post('/user/resetToken', {
-      refreshToken
-    }, {
-      headers: {
-        priority: 1 //刷新token是高权限请求可以在请求拦截器中直接插队执行
-      }
-    })
-    if (!res.data.data && !res.data.data.token && !res.data.data.refreshToken) {
-      throw {
-        ...res,
-        data: {
-          code: ErrorCode.RefreshToken_Expire_Code
-        }
-      }
-    }
-    storage.set('token', res.data.data.token)
-    storage.set('refreshToken', res.data.data.refreshToken)
-  } catch (error) {  //如果refreshToken也过期, 清空过期期间的请求
-    pendingQueue = []
-    throw {
-      ...error,
-      data: {
-        code: ErrorCode.RefreshToken_Expire_Code
-      }
-    }
-  } finally {
-    isRefreshing = false
-  }
-}
 
 function block() {
   return new Promise((resolve, reject) => {
@@ -216,7 +163,7 @@ function block() {
 function send() {
   if (!isRefreshing && pendingQueue.length) {
     const resolve = pendingQueue.shift()!
-    resolve(undefined)
+    resolve()
   }
 }
 

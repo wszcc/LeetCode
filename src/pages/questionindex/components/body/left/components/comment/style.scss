@@ -8,6 +8,7 @@
     img {
       display: inline-block;
       width: 30px;
+      overflow: hidden;
       height: 30px;
       border-radius: 50%;
       background-color: rgb(226, 226, 226);
@@ -19,24 +20,38 @@
     color: rgb(190, 190, 190);
   }
 
+  .show-onHover {
+    visibility: hidden;
+  }
+
+  &:hover {
+    .show-onHover {
+      visibility: visible;
+    }
+  }
+
   .item-content {
     margin: 12px 0;
   }
 
   .item-footer {
     color: rgb(107, 107, 107);
-    span{
+
+    span {
       margin-right: 2px;
     }
+
     div {
       margin-right: 10px;
       cursor: pointer;
-      &:hover{
+
+      &:hover {
         color: rgb(175, 175, 175);
       }
     }
   }
 }
+
 .sub {
   padding: 0 15px;
 
@@ -44,7 +59,7 @@
     height: 5em;
   }
 
-  .sub-comment{
+  .sub-comment {
     border: 1px solid rgb(233, 233, 233);
   }
 }

@@ -1,22 +1,51 @@
-import { memo } from "react";
-import { Provider } from "react-redux";
-import { store } from "./store";
+import { FC, memo, useEffect, useState } from "react";
+import { ErrorCode } from "../../../../../../../apis";
+import { Comment, queryComments } from "../../../../../../../apis/comments";
+import { Flags } from "../../../../../../../utils/shared";
 import Common from "./components/Common";
 
-const Comment = () => (
-  <Provider store={store}>
-    <Common
-      userName="fy"
-      avatar=""
-      content="hello world"
-      likeNum={1234}
-      replyNum={18}
-      parentId={"1"}
-      commentTime="2010/1/15"
-      commentId={"d"}
-      islike={0}
-    />
-  </Provider>
-);
+interface CommentsProps {
+  parentId: string;
+}
 
-export default memo(Comment);
+const CommentFC: FC<CommentsProps> = (props) => {
+  const [comments, setComments] = useState<Comment[] | null>(null);
+  const [curPage, setCurPage] = useState(1);
+  const [pageNum, setPageNum] = useState(1);
+
+  const send = async (pageNum: number, parentId: string) => {
+    const res = await queryComments(pageNum, parentId);
+    if (res.code === ErrorCode.Success) {
+      setPageNum(res.data.totalPage);
+      setComments(res.data.g);
+    }
+  };
+
+  useEffect(() => {
+    send(curPage, props.parentId);
+  }, [curPage, props.parentId]);
+
+  return (
+    <div>
+      {comments ? (
+        comments.map((item) => (
+          <Common
+            userName={item.nickname}
+            avatar={item.avatar}
+            content={item.content}
+            thumbup={item.thumbup}
+            replyNum={item.replyNum}
+            parentId={props.parentId}
+            commentTime={item.commentTime}
+            commentId={item.commentId}
+            islike={item.islike}
+          />
+        ))
+      ) : (
+        <div>loading...</div>
+      )}
+    </div>
+  );
+};
+
+export default memo(CommentFC);
