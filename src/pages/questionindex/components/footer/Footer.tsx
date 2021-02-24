@@ -26,6 +26,9 @@ const Footer: FC = () => {
     function handleCloseExeCode() {
         codeResult.current!.style.display = 'none'
     }
+    function handleSubmitCode() {
+        
+    }
     return (
         <>
             <ul className='exe-code'>
