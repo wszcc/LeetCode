@@ -6,22 +6,25 @@ import {
   FormOutlined,
   LikeFilled,
   LoadingOutlined,
+  ShareAltOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
+import { Image } from "antd";
 import "../style.scss";
 import { getReply, sendComment } from "../../../../../../../../apis/comments";
 import { ErrorCode } from "../../../../../../../../apis";
 import { wrapRequest } from "../../../../../../../../utils/hooks";
-import { Flags, storage } from "../../../../../../../../utils/shared";
+import { storage } from "../../../../../../../../utils/shared";
 interface P {
   userName: string;
   avatar: string;
   content: string;
-  likeNum: number;
+  thumbup: number | null;
   parentId: string;
   commentTime: string | null;
   commentId: string;
   islike: number;
-  replyNum?: number;
+  replyNum?: number | null;
   isRoot?: boolean;
 }
 
@@ -44,7 +47,7 @@ const Common: FC<P> = ({
   replyNum,
   userName,
   avatar,
-  likeNum,
+  thumbup,
   commentId,
   islike,
   isRoot = true,
@@ -71,7 +74,7 @@ const Common: FC<P> = ({
 
   const dispatchComment = async () => {
     console.log(editor.current?.getContent()!);
-    
+
     const res = await sendComment(
       parentId,
       storage.get("userId")!,
@@ -84,7 +87,13 @@ const Common: FC<P> = ({
       <div className="comment-item">
         <div className="flex j-between a-center">
           <div className="header-avatar flex a-center">
-            <img src={avatar} alt={userName} />
+            <Image
+              src={avatar}
+              alt={userName}
+              fallback={
+                "https://assets.leetcode-cn.com/aliyun-lc-upload/default_avatar.png"
+              }
+            />
             <span>{userName}</span>
           </div>
           <span className="comment-time">{commentTime}</span>
@@ -93,17 +102,25 @@ const Common: FC<P> = ({
         <div className="item-footer  flex ">
           <div>
             {islike === 1 ? <LikeFilled /> : <LikeOutlined />}
-            {likeNum}
+            {thumbup || 0}
           </div>
           {isRoot && (
             <div onClick={queryReply}>
               <CommentOutlined />
-              查看{replyNum}条评论
+              查看{replyNum || 0}条评论
             </div>
           )}
           <div onClick={setVisible.bind(null, !visible)}>
             <FormOutlined />
             回复
+          </div>
+          <div className="show-onHover">
+            <ShareAltOutlined />
+            分享
+          </div>
+          <div className="show-onHover">
+            <WarningOutlined />
+            举报
           </div>
         </div>
       </div>
@@ -127,7 +144,7 @@ const Common: FC<P> = ({
                   avatar={item.avatar}
                   parentId={parentId}
                   islike={item.islike}
-                  likeNum={item.thumbup ? item.thumbup : 0}
+                  thumbup={item.thumbup ? item.thumbup : 0}
                   content={item.content}
                   commentTime={item.commentTime}
                   commentId={item.commentId}
@@ -147,5 +164,3 @@ const Common: FC<P> = ({
   );
 };
 export default memo(Common);
-
-const useSubComment = wrapRequest(getReply);

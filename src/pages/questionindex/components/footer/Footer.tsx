@@ -16,7 +16,6 @@ const Footer: FC = () => {
     const [codeRes, setCodeRes] = useState<CodeRes | ''>('')
     async function handleExeCode() {
         const res = await exeCode('questionId', 'code', 'testCode')
-        console.log(res)
         if (res.data.code === 200) {
             setCodeRes(res.data.data)
             codeResult.current!.style.display = 'block'
