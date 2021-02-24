@@ -1,0 +1,60 @@
+.solution-left {
+  .solution-list {
+    .item {
+      padding: 10px 0;
+      transition: .2s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(240, 240, 240);
+      }
+
+      .item-header {
+        font-size: 14px;
+        color: black;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        .avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background-color: rgb(231, 231, 231);
+          overflow: hidden;
+          margin-right: 5px;
+        }
+      }
+
+      .item-content {
+        height: 32px;
+        overflow: hidden;
+        font-size: 12px;
+        margin: 10px 0;
+      }
+
+      .item-footer {
+        .s-like {
+          background-color: rgb(231, 231, 231);
+          padding: 5px;
+          border-radius: 50%;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgb(241, 255, 238);
+            color: rgb(120, 141, 121);
+          }
+        }
+
+        .ic {
+          margin-right: 10px;
+          cursor: pointer;
+
+          &:hover {
+            color: rgb(104, 172, 106);
+          }
+        }
+      }
+    }
+  }
+}

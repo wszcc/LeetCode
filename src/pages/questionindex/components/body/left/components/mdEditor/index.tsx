@@ -22,6 +22,7 @@ interface Props {
   mentionId?: number;
   mentionName?: string;
   onSubmit?(): void;
+  layout?: "up" | "down"
 }
 
 const controlsMin = ["code", "link", "font-size"];
@@ -45,7 +46,7 @@ const MdEditor = forwardRef((props: Props, ref) => {
     <div className="md-wrap">
       <BraftEditor
         id="editor-with-code-highlighter"
-        className="md-editor min"
+        className={props.layout === "down" ? "md-editor min": "md-editor"}
         onChange={setEditorState}
         value={editorState}
         controls={controlsMin as any}
