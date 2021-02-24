@@ -13,7 +13,7 @@ const CommentFC: FC<CommentsProps> = (props) => {
   const [curPage, setCurPage] = useState(1);
   const [pageNum, setPageNum] = useState(1);
 
-  const send = async (pageNum: number, parentId: string) => {
+  const send = async (pageNum: number, parentId: any) => {
     const res = await queryComments(pageNum, parentId);
     if (res.code === ErrorCode.Success) {
       setPageNum(res.data.totalPage);

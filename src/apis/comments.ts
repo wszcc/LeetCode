@@ -1,6 +1,19 @@
 import request, { Response } from './index'
 import axios from 'axios'
 import '../mock/questionIndex'
+export interface Comment {
+  "commentId": string,
+  "content": string,
+  "userId": string,
+  "nickname": string,
+  "avatar": string,
+  "commentTime": string,
+  "thumbup": 0 | 1,
+  "replyNum": number | null,
+  "islike": number
+}
+
+
 export const queryComments = (pageNum: number, parentId: number) => request.post("/comment/get", {
   pageNum, parentId
 }) as Promise<Response<{
@@ -35,4 +48,3 @@ export const getCommit = (questionId:string) => axios.post('/commit/all', {quest
 
 
 export const exeCode = (questionId:string,code:string,testCase:string) => axios.post('/question/run',{questionId, code, testCase}) as Promise<Response>
-
