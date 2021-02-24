@@ -1,5 +1,6 @@
 import request, { Response } from './index'
 import axios from 'axios'
+import '../mock/questionIndex'
 export const queryComments = (pageNum: number, parentId: number) => request.post("/comment/get", {
   pageNum, parentId
 }) as Promise<Response<{
@@ -39,3 +40,7 @@ export const likeQuestion = (
   ) => axios.post('/common/like', {target, targetid, islike}) as Promise<Response>
 
 export const getCommit = (questionId:string) => axios.post('/commit/all', {questionId}) as Promise<Response>
+
+
+export const exeCode = (questionId:string,code:string,testCase:string) => axios.post('/question/run',{questionId, code, testCase}) as Promise<Response>
+

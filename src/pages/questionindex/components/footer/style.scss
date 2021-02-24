@@ -1,0 +1,81 @@
+.exe-code {
+    width: 100%;
+    height: 50px;
+    display: flex;
+   li{
+       position: relative;
+       top: 50%;
+       transform: translateY(-50%);
+       margin: 0 20px 0 20px;
+       font-size: 14px;
+        line-height: 28px;
+        height: 30px;
+        border: 2px solid #DEE1E6;
+        border-radius: 5px;
+        padding: 0px 4px 8px 4px;
+        cursor: pointer;
+    }
+   
+    @each $i in before, execode, totalnumber, submit {
+        @if $i == totalnumber {
+            .#{$i}{
+                border: none;
+            }
+        }@else if ($i == execode){
+            .#{$i}{
+                margin-left: 300px;
+                color: #2DB55D;
+                border: 2px solid #2DB55D;
+            }
+        }@else if ($i == before){
+            .#{$i}{
+                margin-left: 300px;
+            }
+        }@else{
+            .#{$i}{
+                background-color: #2DB55D;
+                color: white;
+                border: 2px solid #2DB55D;
+                width: 70px;
+                text-align: center;
+            }
+        }
+
+    }
+}
+.code-result{
+    width: 700px;
+    height: 250px;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 820px;
+    top: 423px;
+    border: 1px solid #DEE1E6;
+    font-size: 13px;
+    overflow: auto;
+    .header{
+        line-height: 50px;
+    font-weight: 600;
+
+        width: 200px;
+        padding-left: 20px;
+        .close{
+            margin-left: 580px;
+            cursor: pointer;
+        }
+    }
+    .result-info{
+        line-height: 30px;
+        li{
+            padding-left: 20px;
+            .info{
+                background-color: #F1F3F4;
+                display: inline-block;
+                width: 90%;
+                margin: 10px 0 10px 0;
+                padding-left: 20px;
+            }
+        }
+    }
+}

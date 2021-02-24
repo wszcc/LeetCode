@@ -3,7 +3,7 @@ import Desc from './desc/Desc'
 import SubmitRecord from "./submitrecord/SubmitRecord";
 import Comment from './components/comment'
 import { Provider } from 'react-redux'
-import { store } from '../../../store/index'
+import { store } from '../../../store/index.ts'
 const { TabPane } = Tabs;
 
 function callback(key) {
@@ -13,10 +13,7 @@ function callback(key) {
 const Left = (props) => {
   const { width } = props
   return (
-    <div className="left" style={{
-      width: width ? Math.max(width, 300) + "px" : "49.5vw"
-    }}>
-      <Provider store={store}>
+    <Provider store={store}>
       <div className="left" style={{
       width: width ? Math.max(width, 300) + "px" : "49.5vw"
     }}>
@@ -36,7 +33,6 @@ const Left = (props) => {
       </Tabs>
     </div>
     </Provider>
-    </div>
   );
 };
 

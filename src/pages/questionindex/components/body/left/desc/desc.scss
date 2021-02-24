@@ -1,36 +1,59 @@
-.question-index{
-    .left{
-<<<<<<< HEAD
-        .title{
-            margin-left: 30px;
-        }
-        .content{
-            font-size: 13px;
-            margin-left: 30px;
-            margin-top: 20px;
-        }
-        .tag{
-            display: flex;
-            margin-left: 23px;
-            font-size: 12px;
-            border-bottom: 1px solid #DEE1E6;
-            width: 90%;
-            li{
-                margin: 18px;
-            }
-            .easy{
-                color: greenyellow;
-            }
-            .mid{
-                color: indianred;
-            }
-            .difficult{
-                color: red;
-            }
-=======
-        .tag{
-            display: flex;
->>>>>>> 6a27625ed4ccda8095e79060b34b87810c1a3da8
-        }
+.question-index {
+  .left {
+    .title {
+      margin-left: 30px;
     }
+    .content {
+      font-size: 13px;
+      margin-left: 30px;
+      margin-top: 20px;
+    }
+    .submit-number {
+      display: flex;
+      li {
+        margin: 0 40px 0 20px;
+      }
+    }
+    .footer {
+      font-size: 13px;
+      margin-left: 30px;
+      li {
+        border-bottom: 1px solid #dee1e6;
+        width: 90%;
+        line-height: 40px;
+        padding-left: 10px;
+        &:hover{
+            background-color:#FAFAFA;
+        }
+        button {
+            width: 40px;
+            line-height: 20px;
+            height: 26px;
+            background-color: white;
+            border: 1px solid #DEE1E6;
+            margin-left: 20px;
+          }
+      }
+      
+    }
+    .tag {
+      display: flex;
+      margin-left: 23px;
+      font-size: 12px;
+      border-bottom: 1px solid #dee1e6;
+      width: 90%;
+      li {
+        margin: 18px;
+      }
+      .easy {
+        color: greenyellow;
+      }
+      .mid {
+        color: indianred;
+      }
+      .difficult {
+        color: red;
+      }
+    }
+  }
 }
