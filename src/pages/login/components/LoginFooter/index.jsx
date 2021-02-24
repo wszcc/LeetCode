@@ -1,27 +1,16 @@
-import {useSelector} from 'react-redux'
 import {
     QqOutlined,
     GithubOutlined,
     WeiboOutlined,
     WechatOutlined,
-    EllipsisOutlined,
-    CaretRightOutlined
+    EllipsisOutlined
 } from '@ant-design/icons'
-
+import './index.scss'
 
 
 const Footer = () => {
-    const {isPhoneLogin} = useSelector(allStates => ({
-        isPhoneLogin: allStates.loginHeader.isPhoneLogin
-    }))
-    
     return (
         <>
-            <div className='us-user-login'
-                style={{ display: `${isPhoneLogin ? 'block' : 'none'}` }}
-            >
-                已有美国站账号&nbsp;{<CaretRightOutlined />}
-            </div>
             <div className='login-card-ways'>
                 <div className='login-card-ways-item'>
                     <div className='icon-warp'>
@@ -49,6 +38,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
+
             <div className='login-card-footer'>
                 <div className='login-card-footer-top'>登录注册即代表同意力扣&emsp;<span className='login-card-footer-top sp'>用户协议</span>&emsp;和&emsp;<span className='login-card-footer-top sp'>隐私协议</span></div>
                 <div className='login-card-footer-buttom'>
