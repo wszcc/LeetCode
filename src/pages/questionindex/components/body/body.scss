@@ -22,6 +22,8 @@
         }
         .right{
           flex-grow: 1;
+          height: calc(100vh - 45px);
+          overflow-y: scroll;
         }
     }
 }
