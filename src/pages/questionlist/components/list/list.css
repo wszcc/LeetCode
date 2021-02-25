@@ -1,0 +1,39 @@
+#test{
+    width: 100%;
+    margin-left: 0px;
+}
+
+#item_message{
+    display: flex;
+    margin-right: 20px;
+}
+
+#item_message div{
+    margin-left: 30px;
+}
+
+#data_title{
+    width: 800px;
+}
+
+#data_answer_num{
+    width: 70px;
+}
+
+#data_passrate{
+    width: 70px;
+}
+
+#data_difficulty{
+    width: 70px;
+    color:rgb(115, 179, 20)
+}
+
+#data_status{
+    width: 70px;
+}
+
+#data_message{
+    display: flex;
+    justify-content: end;
+}

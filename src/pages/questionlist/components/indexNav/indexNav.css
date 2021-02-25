@@ -1,0 +1,47 @@
+#navWrap{
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px gray solid;
+    height: 50px;
+    line-height: 50px;
+}
+
+#list_introduction{
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+    background-color: rgba(128, 128, 128, 0.315);
+}
+
+#intro_title{
+    margin-left: 110px;
+    width: 780px;
+}
+
+#intro_answer{
+    width: 70px;
+}
+
+#intro_passrate{
+    width: 70px;
+    margin-left: 20px;
+}
+
+#intro_difficulty{
+    width: 70px;
+    margin-left: 35px;
+}
+
+#intro_status{
+    width: 70px;
+    margin-left: 40px;
+}
+
+#button_start{
+    margin-right: 260px;
+}
+
+#search{
+    width: 200px;
+    margin-right: 520px;
+}

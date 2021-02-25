@@ -1,0 +1,37 @@
+.question-index{
+    .body{
+        display: flex;
+        height: 87vh;
+        overflow: auto;
+        .left{
+            width: 49.5vw;
+            height: calc(100vh - 45px);
+            overflow-y: scroll;
+        }
+        .mid-drag-bar {
+            width: 1vw;
+            // height: calc(100% - 45px);
+            background-color: rgb(223, 223, 223);
+            flex-shrink: 0;
+            transition: .5s;
+            cursor: col-resize;
+
+            &:hover{
+              background-color: rgb(190, 190, 190);
+            }
+        }
+        .right{
+          flex-grow: 1;
+          height: calc(100vh - 45px);
+          overflow-y: scroll;
+        }
+    }
+}
+.ant-tabs-tab{
+    width: 150px;
+    text-align: center;
+    font-size: 13px;
+}
+.ant-tabs-tab-btn{
+    margin-left: 20px;
+}
