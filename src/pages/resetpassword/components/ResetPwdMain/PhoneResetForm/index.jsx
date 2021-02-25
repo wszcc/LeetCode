@@ -1,6 +1,6 @@
-// import { message, Card, Form, Button, Input } from 'antd';
+// import { Form, Button, Input } from 'antd';
 // import React, { useRef, useState } from 'react';
-// // import { InvalidPhoneNumber, EmptyPhoneNumber, EmptyCaptcha } from 'src/pages/login/components/LoginMain/ErrorInfo'
+// import { InvalidPhoneNumber, EmptyPhoneNumber, EmptyCaptcha } from '../../../../login/components/LoginMain/ErrorInfo'
 // import CaptchaInput from '../../../../login/components/LoginMain/PhoneLoginForm/CaptchaInput'
 // import './index.scss'
 
