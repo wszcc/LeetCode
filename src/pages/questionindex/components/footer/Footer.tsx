@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import React,{ FC, useEffect, useRef, useState } from 'react'
 import './style.scss'
 import { exeCode } from '../../../../apis/comments'
 import { message } from 'antd'
@@ -25,6 +25,9 @@ const Footer: FC = () => {
     }
     function handleCloseExeCode() {
         codeResult.current!.style.display = 'none'
+    }
+    function handleCodeSubmit () {
+        
     }
     return (
         <>
