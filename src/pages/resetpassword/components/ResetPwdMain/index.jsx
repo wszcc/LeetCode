@@ -1,6 +1,6 @@
 import { Card, Radio } from 'antd'
 import { useState } from 'react';
-import PhoneResetForm from './PhoneResetForm'
+// import PhoneResetForm from './PhoneResetForm'
 
 import './index.scss'
 const ResetPwdMain = (props) => {
@@ -29,11 +29,11 @@ const ResetPwdMain = (props) => {
                 <Radio value={false}>用邮箱重设</Radio>
             </Radio.Group>
 
-            <PhoneResetForm />
+            {/* <PhoneResetForm /> */}
 
 
         </Card>
     )
 }
 
-export default ResetPwdMain
+export default ResetPwdMain;
