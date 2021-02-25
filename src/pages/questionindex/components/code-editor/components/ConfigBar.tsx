@@ -23,7 +23,7 @@ const ConfigBar: FC<P> = ({dispatch}) => {
   return (
     <div className="head-bar flex j-between">
       <div>
-        java
+        
       </div>
       <div className="config-bar flex a-center">
         <div className="i-config" onClick={resetCode}>

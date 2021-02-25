@@ -26,12 +26,9 @@ const Footer: FC = () => {
     function handleCloseExeCode() {
         codeResult.current!.style.display = 'none'
     }
-    function handleSubmitCode() {
-        
-    }
     return (
         <>
-            <ul className='exe-code'>
+            <ul className='exe-code-box'>
                 <li><BarsOutlined />题目列表</li>
                 <li><SwapOutlined />随机一题</li>
                 <li className='before'><LeftOutlined />上一题</li>

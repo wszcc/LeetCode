@@ -134,4 +134,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default memo(connect(mapState, mapDispatch)(Desc));
+export default connect(mapState, mapDispatch)(Desc);

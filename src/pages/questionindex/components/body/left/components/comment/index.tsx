@@ -30,6 +30,7 @@ const CommentFC: FC<CommentsProps> = (props) => {
       {comments ? (
         comments.map((item) => (
           <Common
+            key={item.commentId}
             userName={item.nickname}
             avatar={item.avatar}
             content={item.content}

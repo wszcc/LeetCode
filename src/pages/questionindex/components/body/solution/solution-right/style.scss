@@ -1,0 +1,43 @@
+.solution-right {
+  header {
+    height: 40px;
+    background-color: #f7f7f7;
+    padding: 0 10px;
+    font-size: 14px;
+
+    .close-btn {
+      padding: .2em 1em;
+      border: 1px solid #8a8a8a;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        border: 1px solid rgb(66, 141, 47);
+        background-color: #d8e7d7;
+        color: rgb(66, 141, 47);
+      }
+    }
+  }
+  .main {
+    padding: 15px;
+
+    .solution-header {
+      font-size: 14px;
+      img {
+        width: 30px;
+        height: 30px;
+        background-color: #d8e7d7;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+    }
+
+    .content {
+      padding: 20px 0;
+    }
+  }
+
+}

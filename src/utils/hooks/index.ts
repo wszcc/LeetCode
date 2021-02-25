@@ -54,7 +54,7 @@ export const useConfirm = ({
 }
 
 export const wrapRequest = <T extends any[], R>(req: (...args: T) => Promise<Response<R>>) => {
-  const useReqImpl = (...args: T):[Response<R>["data"], Flags, () => void] => {
+  const useReqImpl = (...args: T): [Response<R>["data"], Flags, () => void] => {
     const [data, setData] = useState<Response["data"]>(null)
     const [flag, setFlag] = useState(Flags.Normal)
 
@@ -67,7 +67,7 @@ export const wrapRequest = <T extends any[], R>(req: (...args: T) => Promise<Res
         setFlag(Flags.Fail)
       }
       setData(res.data)
-    }, [])
+    }, [...args])
 
     useEffect(() => {
       send()
