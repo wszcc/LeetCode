@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Card, Button } from 'antd';
+import {useHistory} from 'react-router-dom'
 import PhoneLoginForm from './PhoneLoginForm'
 import PwdLoginForm from './PwdLoginForm'
 import { CaretRightOutlined} from '@ant-design/icons'
@@ -7,13 +8,19 @@ import { CaretRightOutlined} from '@ant-design/icons'
 import './index.scss'
 
 
-const LoginMain = (props) => {
+interface IProps {
+    isPhoneLogin: boolean,
+    setIsPhoneLogin: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-    const {isPhoneLogin, setIsPhoneLogin} = props;
 
+const LoginMain: React.FC<IProps> = ({ isPhoneLogin, setIsPhoneLogin}) => {
+
+    let history = useHistory();
     const handleClick = () => {
+        
         if (!isPhoneLogin) {
-            
+            history.push('/resetpassword');
         }
     };
 
@@ -47,4 +54,4 @@ const LoginMain = (props) => {
     )
 }
 
-export default LoginMain
+export default LoginMain;

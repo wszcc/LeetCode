@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     QqOutlined,
     GithubOutlined,
@@ -8,7 +9,7 @@ import {
 import './index.scss'
 
 
-const Footer = () => {
+const Footer: React.FC = () => {
     return (
         <>
             <div className='login-card-ways'>
