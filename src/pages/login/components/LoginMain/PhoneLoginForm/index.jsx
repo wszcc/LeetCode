@@ -1,9 +1,9 @@
 import { Form, Button, message } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PhoneInput from './PhoneInput'
 import CaptchaInput from './CaptchaInput'
 
-import { InvalidPhoneNumber, EmptyPhoneNumber, EmptyCaptcha } from '../ErrorInfo'
+import { InvalidPhoneNumber, EmptyPhoneNumber, EmptyCaptcha } from '../ErrorInfo/index'
 import './index.scss'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { beEmptyCaptcha, breakCaptchaDefault } from '../../../store/actions/captchaInput'
@@ -15,6 +15,7 @@ import { beEmptyNumber, breakPhoneDefault } from '../../../store/actions/phoneIn
 
 
 const PhoneLoginForm = (props) => {
+
     const [form] = Form.useForm();
 
 
@@ -28,8 +29,6 @@ const PhoneLoginForm = (props) => {
 
 
     const dispacth = useDispatch()
-
-
     /* 
 
         需求：
@@ -60,10 +59,6 @@ const PhoneLoginForm = (props) => {
         console.log(values);
     }
 
-
-    // useEffect(() => {
-
-    // }, []);
 
 
     return (
@@ -98,6 +93,11 @@ const PhoneLoginForm = (props) => {
                             isInValidPhoneNumber ? <InvalidPhoneNumber /> :
                                 <></>
                 }
+                validateStatus={
+                    isPhoneKeepDefault ? 'success' :
+                        isPhoneEmpty ? 'error' :
+                        isInValidPhoneNumber ? 'error' : 'success'
+                }
             >
                 <PhoneInput />
             </Form.Item>
@@ -115,6 +115,10 @@ const PhoneLoginForm = (props) => {
                     isCaptchaKeepDefault ? <></> :
                         isCaptchaEmpty ? <EmptyCaptcha /> :
                             <></>
+                }
+                validateStatus={
+                    isCaptchaKeepDefault ? 'success' :
+                        isCaptchaEmpty ? 'error' : 'success'
                 }
             >
                 <CaptchaInput />

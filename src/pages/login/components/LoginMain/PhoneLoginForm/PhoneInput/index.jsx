@@ -1,8 +1,6 @@
 import { Input, Select,  } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useContext } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-
-import { DownOutlined } from '@ant-design/icons';
 
 import {
     beInvalidNumber,
@@ -15,12 +13,17 @@ import {
     keepPhoneDefault,
     breakPhoneDefault
 }  from '../../../../store/actions/phoneInput'
+import { DownOutlined } from '@ant-design/icons';
+
+import { ResetContext } from '../../../../../resetpassword/components/ResetPwdMain/index'
 import './index.scss'
 
 const { Option } = Select;
 
 const PhoneInput = ({onChange, value = {}}) => {
     const dispatch = useDispatch();
+
+    const isReset = useContext(ResetContext);
 
     const [isSelectMouseEnter, setIsSelectMouseEnter] = useState(false);
     const [isOpened, setIsOpened] = useState(false);
@@ -45,9 +48,7 @@ const PhoneInput = ({onChange, value = {}}) => {
     }, [onChange, phoneNumber, selectValue, value]);
 
 
-   
-    // console.log(phoneNumber);
-    const defOnChange = useCallback((e) => {
+       const defOnChange = useCallback((e) => {
         dispatch(keepPhoneDefault());
         // 如果是 Select 改变
         if (typeof e === 'string') {
@@ -64,7 +65,7 @@ const PhoneInput = ({onChange, value = {}}) => {
             dispatch(onPhoneChange(phoneNumber));
 
             // isInvalid
-            const isInvalid = !/^1[3-9][0-9]{9}$/g.test(phoneNumber);
+            const isInvalid = !(/^1[3-9][0-9]{9}$/g.test(phoneNumber)/* ||phoneNumber === '' */);
             if (isInvalid) dispatch(beInvalidNumber());
             else dispatch(notBeInvalidNumber());
 
@@ -80,11 +81,7 @@ const PhoneInput = ({onChange, value = {}}) => {
     }, [dispatch, triggerChange])
 
 
-    const onBlur = () => {
-        dispatch(breakPhoneDefault());
-        
-    }
-
+ 
     return (
         <>
             <Input
@@ -94,11 +91,12 @@ const PhoneInput = ({onChange, value = {}}) => {
                 onChange={defOnChange}
 
                 onFocus={() => dispatch(notBeOnBlur())}
-                onBlur={onBlur}
+                onBlur={() => dispatch(breakPhoneDefault())}
                 
 
-                prefix={
-                    <Select
+                prefix={isReset ? '' :
+                     
+                    <Select 
                         bordered={false}
                         className='phone-input-select'
                         defaultValue='+86'
@@ -115,6 +113,7 @@ const PhoneInput = ({onChange, value = {}}) => {
                         // 处理下拉框是否展开
                         onClick={() => setIsOpened(!isOpened)}
                         onChange={defOnChange}
+                        onFocus={() => {console.log(1);}}
 
                         open={isOpened}
                         // options={options}   用 options 属性替换 Option 组件性能更好
@@ -143,6 +142,7 @@ const PhoneInput = ({onChange, value = {}}) => {
                         <Option key='17' value='+82'>韩国(+82)</Option>
                         <Option key='18' value='+91'>印度(+91)</Option>
                     </Select>
+                   
                 }
             />
         </>
