@@ -1,7 +1,9 @@
+import { Divider } from "antd";
 import { FC, memo, useEffect, useState } from "react";
 import { ErrorCode } from "../../../../../../../apis";
 import { Comment, queryComments } from "../../../../../../../apis/comments";
 import { Flags } from "../../../../../../../utils/shared";
+import MdEditor from "../mdEditor";
 import Common from "./components/Common";
 
 interface CommentsProps {
@@ -26,7 +28,33 @@ const CommentFC: FC<CommentsProps> = (props) => {
   }, [curPage, props.parentId]);
 
   return (
-    <div>
+    <div className="comment-main">
+      <span
+        style={{
+          fontWeight: 8000,
+          fontSize: "20px",
+          color: "#595959",
+          marginRight: "5px"
+        }}
+      >
+        {768}
+      </span>
+      条评论
+      <MdEditor />
+      <Divider
+        style={{
+          borderTopColor: "#bfbfbf",
+        }}
+      >
+        <span
+          style={{
+            color: "#bfbfbf",
+            fontSize: "14px",
+          }}
+        >
+          精选评论
+        </span>
+      </Divider>
       {comments ? (
         comments.map((item) => (
           <Common
