@@ -1,5 +1,5 @@
-import { FC, memo, useEffect, useRef, useState } from "react";
-import Editor from "../../mdEditor";
+import { FC, memo, useContext, useRef, useState } from "react";
+import Editor, { EditorRef } from "../../mdEditor";
 import {
   LikeOutlined,
   CommentOutlined,
@@ -15,6 +15,7 @@ import { getReply, sendComment } from "../../../../../../../../apis/comments";
 import { ErrorCode } from "../../../../../../../../apis";
 import { wrapRequest } from "../../../../../../../../utils/hooks";
 import { storage } from "../../../../../../../../utils/shared";
+import { ActiveEditorId } from "..";
 interface P {
   userName: string;
   avatar: string;
@@ -53,12 +54,10 @@ const Common: FC<P> = ({
   isRoot = true,
 }) => {
   const [sub, setSub] = useState<Sub[]>([]);
-  const [visible, setVisible] = useState(false);
   const [showSub, setShowSub] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
-  const editor = useRef<{
-    getContent(): string;
-  }>(null);
+  const { id, setId } = useContext(ActiveEditorId);
+  const editor = useRef<EditorRef>(null);
 
   const queryReply = async () => {
     setShowSub(!showSub);
@@ -74,12 +73,21 @@ const Common: FC<P> = ({
 
   const dispatchComment = async () => {
     console.log(editor.current?.getContent()!);
+    console.log(parentId);
 
     const res = await sendComment(
       parentId,
       storage.get("userId")!,
       editor.current?.getContent()!
     );
+
+    if (res.code === ErrorCode.Success) {
+    }
+  };
+
+  const swapEditor = () => {
+    const editorId = editor.current!.getId();
+    setId(editorId);
   };
 
   return (
@@ -110,7 +118,7 @@ const Common: FC<P> = ({
               查看{replyNum || 0}条评论
             </div>
           )}
-          <div onClick={setVisible.bind(null, !visible)}>
+          <div onClick={swapEditor}>
             <FormOutlined />
             回复
           </div>
@@ -126,13 +134,12 @@ const Common: FC<P> = ({
       </div>
       <div className="sub">
         <div className="edit">
-          {visible && (
-            <Editor
-              ref={editor}
-              onSubmit={dispatchComment}
-              mentionName={userName}
-            />
-          )}
+          <Editor
+            visible={id === editor.current?.getId()}
+            ref={editor}
+            onSubmit={dispatchComment}
+            mentionName={userName}
+          />
         </div>
         {isRoot && showSub && (
           <div className="sub-comment">

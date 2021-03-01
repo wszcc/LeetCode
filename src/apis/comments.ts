@@ -46,5 +46,4 @@ export const likeQuestion = (
 
 export const getCommit = (questionId:string) => axios.post('/commit/all', {questionId}) as Promise<Response>
 
-
 export const exeCode = (questionId:string,code:string,testCase:string) => axios.post('/question/run',{questionId, code, testCase}) as Promise<Response>
