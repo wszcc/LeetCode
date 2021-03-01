@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.44",
+    "craco-less": "^1.17.1",
     "http-proxy-middleware": "^1.0.6",
     "mockjs": "^1.1.0"
   }

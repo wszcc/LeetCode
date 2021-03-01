@@ -21,13 +21,11 @@ import "codemirror/addon/fold/foldcode.js";
 import "codemirror/addon/fold/foldgutter.js";
 import "codemirror/addon/fold/brace-fold.js";
 import "codemirror/addon/fold/comment-fold.js";
-
 import "codemirror/addon/comment/comment";
 import "codemirror/keymap/sublime";
 import "codemirror/addon/edit/closebrackets.js"; //自动括号
 import { connect } from "react-redux";
 import { actSaveCode } from "../store/actions";
-import { stat } from "fs";
 import { RootState } from "../../../store";
 
 interface Config {
