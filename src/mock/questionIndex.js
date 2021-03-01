@@ -83,3 +83,18 @@ Mock.mock("/question/run", "post", function (options) {
     },
   });
 });
+
+Mock.mock('/question/commit','post',function(params){
+  console.log(params)
+  return ({
+    "code": 200,
+    "message": "OK",
+    "data": {
+      "result": "pass",
+      "runtime": "0ms",
+      "runtimeBeat": "100.00%",
+      "memory": "352.mb",
+      "memoryBeat": "63.91%"
+    }
+  })
+})

@@ -1,9 +1,9 @@
 import React,{ FC, useEffect, useRef, useState } from 'react'
 import './style.scss'
-import { exeCode } from '../../../../apis/comments'
+import { exeCode, submitCode } from '../../../../apis/comments'
 import { message } from 'antd'
 import { BarsOutlined, SwapOutlined, LeftOutlined, RightOutlined, CaretRightOutlined, } from '@ant-design/icons'
-
+import { connect } from 'react-redux'
 interface CodeRes {
     "state": string,
     "input": string,
@@ -11,11 +11,15 @@ interface CodeRes {
     "exceptResult": string
 }
 
-const Footer: FC = () => {
+interface Props {
+    code:string
+}
+
+const Footer: FC<Props> = (props) => {
     const codeResult = useRef<null | HTMLDivElement>(null)
     const [codeRes, setCodeRes] = useState<CodeRes | ''>('')
     async function handleExeCode() {
-        const res = await exeCode('questionId', 'code', 'testCode')
+        const res = await exeCode('questionId', props.code, 'testCode')
         if (res.data.code === 200) {
             setCodeRes(res.data.data)
             codeResult.current!.style.display = 'block'
@@ -26,8 +30,18 @@ const Footer: FC = () => {
     function handleCloseExeCode() {
         codeResult.current!.style.display = 'none'
     }
-    function handleCodeSubmit () {
-        
+    useEffect(() =>{
+        console.log(props.code)
+    })
+
+    async function handleCodeSubmit () {
+        const res = await submitCode ('jiosdnf',props.code)
+        console.log(res)
+        if(res.data.code === 200){
+            message.success('提交成功')
+        }else{
+            message.error('提交失败')
+        }    
     }
     return (
         <>
@@ -40,7 +54,7 @@ const Footer: FC = () => {
                 <li>控制台</li>
                 <li>贡献</li>
                 <li onClick={handleExeCode} className='execode'><CaretRightOutlined />执行代码</li>
-                <li className='submit'>提交</li>
+                <li onClick={handleCodeSubmit} className='submit'>提交</li>
             </ul>
             <div ref={codeResult} className='code-result'>
                 <span className='header'>
@@ -60,5 +74,9 @@ const Footer: FC = () => {
 
     )
 }
-
-export default Footer
+const mapState = (state:any) => {
+    return {
+        code:state.editorConfig.code
+    }
+}
+export default connect(mapState)(Footer)
