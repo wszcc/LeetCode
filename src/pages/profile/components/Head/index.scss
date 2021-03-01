@@ -1,0 +1,57 @@
+.pro-name {
+    float: left;
+    width: 670.4px;
+    height: 80px;
+    line-height: 0;
+    img {
+        vertical-align: top;
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+    }
+    .pro-introduce {
+        display: inline-block;
+        margin-left: 24px;
+        width: 124.64px;
+        height: 80px;
+        .pro-xing {
+            display: inline-block;
+            height: 28px;
+            font-size: 20px;
+            color: #000000;
+            line-height: 28px;
+        }
+        .gexing {
+            height: 20px;
+            font-size: 12px;
+            color: #BFBFBF;
+            line-height: 20px;
+        }
+        .pro-placing {
+            margin-top: 10px;
+            width: 124.64px;
+            height: 20px;
+            .pro-ranking {
+                display: inline-block;
+                width: 56px;
+                height: 20px;
+                color: #000000A6;
+                font-size: 14px;
+                line-height: 20px;
+            }
+            .pro-number {
+                display: inline-block;
+                margin: 0 0 0 8px;
+                width: 60.64;
+                height: 20px;
+                color: #000000;
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+    }
+}
+
+.pro-edit {
+    float: right;
+}

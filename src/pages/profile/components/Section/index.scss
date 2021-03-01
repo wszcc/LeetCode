@@ -1,0 +1,83 @@
+.pro-exhibition {
+    display: flex;
+    margin: -8px 0px -8px -8px;
+    padding: 8px 0px 8px 8px;
+    width: 762px;
+    height: 196px;
+    .pro-achive {
+        position: relative;
+        width: 365px;
+        height: 180px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 1px 8px rgba(0, 0, 0, 0.08);
+        .ant-statistic {
+            width: 365px;
+            height: 55.4px;
+            padding: 16px 16px 0px;
+            .ant-statistic-title {
+                margin: 0 0 1px;
+                font-size: 12px;
+                color: #3C3C4399;
+            }
+            .ant-statistic-content {
+                width: 46px;
+                height: 21.6px;
+                line-height: 21.6px;
+                .ant-statistic-content-value-int {
+                    color: #262626;
+                    font-size: 22px;
+                }
+            }
+        }
+        .pro-medal {
+            position: absolute;
+            bottom: 16px;
+            margin-left: 16px;
+            span {
+                color: #3C3C4399;
+                font-size: 12px;
+            }
+            b {
+                display: block;
+                margin-top: -4px;
+                font-weight: 400;
+                color: #262626BF;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.pro-submit {
+    width: 746px;
+    height: 144.26px;
+    margin-top: 16px;
+    .pro-annual {
+        margin-bottom: 16px;
+        height: 28px;
+        .pro-annual-years {
+            float: left;
+        }
+        .pro-annual-last-year {
+            float: right;
+            .ant-dropdown-link {
+                box-sizing: border-box;
+                padding: 4px 8px;
+                width: 82px;
+                height: 28px;
+                font-size: 14px;
+                border: 1px solid rgb(217, 217, 217);
+                border-radius: 3px;
+                color: black;
+                &:hover {
+                    border: 1px solid rgb(45, 181, 93);
+                }
+            }
+        }
+    }
+    .pro-month-record {
+        width: 746px;
+        height: 96.26px;
+    }
+}

@@ -4,6 +4,7 @@ import { exeCode, submitCode } from '../../../../apis/comments'
 import { message } from 'antd'
 import { BarsOutlined, SwapOutlined, LeftOutlined, RightOutlined, CaretRightOutlined, } from '@ant-design/icons'
 import { connect } from 'react-redux'
+import { submitCodeaAction, ExeCodeRes, exeCodeResAction } from '../../store/actions'
 interface CodeRes {
     "state": string,
     "input": string,
@@ -12,14 +13,17 @@ interface CodeRes {
 }
 
 interface Props {
-    code:string
+    code:string,
+    disSubmtCode:(key:string) => void,
+    disExeCodeRes:(res:ExeCodeRes) => void
 }
 
 const Footer: FC<Props> = (props) => {
+    const {code, disSubmtCode, disExeCodeRes} = props
     const codeResult = useRef<null | HTMLDivElement>(null)
     const [codeRes, setCodeRes] = useState<CodeRes | ''>('')
     async function handleExeCode() {
-        const res = await exeCode('questionId', props.code, 'testCode')
+        const res = await exeCode('questionId',code, 'testCode')
         if (res.data.code === 200) {
             setCodeRes(res.data.data)
             codeResult.current!.style.display = 'block'
@@ -30,14 +34,13 @@ const Footer: FC<Props> = (props) => {
     function handleCloseExeCode() {
         codeResult.current!.style.display = 'none'
     }
-    useEffect(() =>{
-        console.log(props.code)
-    })
-
+  
     async function handleCodeSubmit () {
-        const res = await submitCode ('jiosdnf',props.code)
-        console.log(res)
+        const res = await submitCode ('questionId',code)
+        
         if(res.data.code === 200){
+            disSubmtCode('4')
+            disExeCodeRes(res.data.data)
             message.success('提交成功')
         }else{
             message.error('提交失败')
@@ -79,4 +82,15 @@ const mapState = (state:any) => {
         code:state.editorConfig.code
     }
 }
-export default connect(mapState)(Footer)
+const mapDispatch = (dispatch:any) => {
+    return {
+        disSubmtCode(key:string){
+            dispatch(submitCodeaAction(key))
+        },
+        disExeCodeRes(res:ExeCodeRes) {
+            dispatch(exeCodeResAction(res))
+        }
+    }
+}
+
+export default connect(mapState, mapDispatch)(Footer)

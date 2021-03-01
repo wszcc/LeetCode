@@ -1,5 +1,6 @@
 import { Table, Tag, Space } from "antd";
 import { memo, useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { getCommit } from '../../../../../../apis/comments'
 import { getKeys } from '../../../../../../utils/shared'
 const columns = [
@@ -26,7 +27,7 @@ const columns = [
   },
 ];
 
-const SubmitRecord = () => {
+const SubmitRecord = (props) => {
   const [commitList, setCommitList] = useState()
   useEffect(() =>{
     getCommit('josdnf')
@@ -35,8 +36,19 @@ const SubmitRecord = () => {
       console.log(getKeys(res.data.data.commitList))
     })
   },[])
+  useEffect(() =>{
+    console.log(props)
+  })
   return (
     <div className="submit-record">
+      {
+        props.exeCodeRes.result?<ul className='result-info'>
+        <li>执行结果 <span >{props.exeCodeRes.result == 'pass' ? '通过' : '解答错误'}</span></li>
+        <li>执行时间 <span className="info">{props.exeCodeRes.runtime}</span></li>
+        <li>击败对手 <span className="info">{props.exeCodeRes.runtimeBeat}</span></li>
+        <li>内存消耗 <span className="info">{props.exeCodeRes.memory}</span></li>
+    </ul>:null
+      }
       {
         commitList? <Table pagination={false} columns={columns} dataSource={commitList} /> :''
       }
@@ -44,4 +56,10 @@ const SubmitRecord = () => {
   );
 };
 
-export default memo(SubmitRecord);
+const mapState = (state) =>{
+  return {
+    exeCodeRes:state.desc.exeCodeRes
+  }
+}
+
+export default connect(mapState)(memo(SubmitRecord));

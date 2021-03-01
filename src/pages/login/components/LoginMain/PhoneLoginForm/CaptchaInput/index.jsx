@@ -17,8 +17,6 @@ import './index.scss'
 
 const CaptchaInput = ({ onChange, value = {} }) => {
     const dispacth = useDispatch();
-
-
     const captchaValue = useSelector(allStates => allStates.captchaInput.value, shallowEqual);
     const isInvalid = useSelector(allStates => allStates.phoneInput.isInvalid, shallowEqual);
     const isLoading = useSelector(allStates => allStates.captchaInput.isLoading, shallowEqual);

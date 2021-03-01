@@ -1,0 +1,137 @@
+.pro-follow {
+    padding: 16px 0px;
+    text-align: center;
+    width: 238px;
+    height: 75.6px;
+    .pro-follow-left {
+        float: left;
+        width: 118.5px;
+        font-size: 14px;
+        .ant-statistic-title {
+            display: inline-block;
+            margin: 0;
+            width: 42px;
+            height: 20px;
+            color: #262626BF;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        .ant-statistic-content {
+            color: #262626;
+            font-size: 16px;
+        }
+    }
+    .pro-divider {
+        margin: 0;
+        width: 1px;
+        height: 26px;
+        margin-top: 8px;
+        background-color: #F0F0F0;
+    }
+    .pro-follow-right {
+        float: right;
+        width: 118.5px;
+        line-height: 20px;
+        .ant-statistic-title {
+            display: inline-block;
+            margin: 0;
+            width: 42px;
+            height: 20px;
+            color: #262626BF;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        .ant-statistic-content {
+            color: #262626;
+            font-size: 16px;
+        }
+    }
+}
+
+.pro-data {
+    margin-left: 16px;
+    width: 206px;
+    height: 32px;
+    font-size: 14px;
+    color: #262626BF;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 5px;
+    background-color: #0000000D;
+    &:hover {
+        background-color: rgb(229, 229, 229);
+    }
+}
+
+.pro-achie {
+    margin: 0 16px;
+    padding: 24px 0;
+    width: 206px;
+    height: auto;
+    border-bottom: 1px solid rgb(240, 240, 240);
+    .ant-typography {
+        margin: 0 0 16px;
+        color: #262626;
+    }
+    .pro-proce {
+        display: flex;
+        flex-wrap: wrap;
+        width: 206px;
+        height: 184.8px;
+        img {
+            width: 18px;
+            height: 18px;
+        }
+        .ant-statistic {
+            width: 206px;
+            height: 18px;
+            .ant-statistic-title {
+                display: inline-block;
+                margin: 0 0 8px 0;
+                height: 18px;
+                color: #262626BF;
+                font-size: 14px;
+                line-height: 18px;
+            }
+            .ant-statistic-content {
+                display: inline-block;
+                margin-left: 8px;
+                color: #262626;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.pro-profile {
+    margin: 0 16px;
+    padding: 24px 0;
+    width: 206px;
+    height: auto;
+    border-bottom: 1px solid rgb(240, 240, 240);
+    .ant-typography {
+        margin: 0 0 16px;
+        color: #262626;
+    }
+    .pro-profile-detail {
+        height: auto;
+        .pro-picture {
+            margin-bottom: 10px;
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}
+
+.pro-skills {
+    margin: 0 16px;
+    padding: 24px 0;
+    width: 206px;
+    height: auto;
+    .ant-typography {
+        margin: 0 0 16px;
+        color: #262626;
+    }
+}

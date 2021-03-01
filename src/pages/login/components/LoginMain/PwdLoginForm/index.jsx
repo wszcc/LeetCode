@@ -1,7 +1,7 @@
 import { Form, Button, Input } from 'antd';
 import React, { useEffect } from 'react';
 
-import { EmptyUsername, EmptyPassword } from '../ErrorInfo'
+import { EmptyUsername, EmptyPassword } from '../ErrorInfo/index'
 import './index.scss'
 
 
@@ -116,6 +116,11 @@ const PhoneLoginForm = (props) => {
                         isUsernameEmpty ? <EmptyUsername /> :
                             <></>
                 }
+                validateStatus={
+                    isUsernameKeepDefault ? 'success' :
+                        isUsernameEmpty ? 'error' : 'success'
+            
+                }
             >
                 <Input className='username-input' placeholder='手机号 / 邮箱'onChange={listenUsername} />
             </Form.Item>
@@ -133,6 +138,10 @@ const PhoneLoginForm = (props) => {
                     isPwdKeepDefault ? <></> :
                         isPwdEmpty ? <EmptyPassword /> :
                             <></>
+                }
+                validateStatus={
+                    isPwdKeepDefault ? 'success' :
+                        isPwdEmpty ? 'error' : 'success'
                 }
             >
                 <Input.Password className='password-input' placeholder='输入密码' onChange={listenPassword} />

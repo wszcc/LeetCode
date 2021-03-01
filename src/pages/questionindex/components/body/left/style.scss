@@ -1,0 +1,16 @@
+.left{
+    .result-info{
+        line-height: 30px;
+        background-color: #F1F3F4;
+        li{
+            padding-left: 20px;
+            .info{
+                background-color: #FAFAFA;
+                display: inline-block;
+                width: 90%;
+                margin: 10px 0 10px 0;
+                padding-left: 20px;
+            }
+        }
+    }
+}
