@@ -4,6 +4,7 @@ import { Flags, LooseObj } from "../shared"
 import { Modal } from 'antd'
 import { Main_Dark, Main_Light } from "../../config/colors"
 import { ErrorCode, Response } from '../../apis'
+import { useParams } from "react-router"
 interface Update<T> {
   (updateFn: (draft: Immutable<T>) => void): void
 }
@@ -76,4 +77,11 @@ export const wrapRequest = <T extends any[], R>(req: (...args: T) => Promise<Res
     return [data, flag, send]
   }
   return useReqImpl
+}
+
+export const useGetQuestionId = () => {
+  const { questionId } = useParams<{
+    questionId: string | undefined
+  }>()
+  return questionId
 }
