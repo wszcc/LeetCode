@@ -8,10 +8,11 @@ export type SolutionList = {
   "title": string,
   "summary": string,
   "view": string,
+  "islike": number,
   "thumbup": number,
   "commentNum": number,
   "answerId": string,
-  "createTime": string
+  "createTime": string,
 }
 export type DetailInfo = {
   "userId": number,
@@ -31,6 +32,12 @@ export const fetchSolution = (questionId: number, currentPage: number) => reques
   questionId,
   currentPage
 }) as Promise<Response<SolutionList[]>>
+
+export const likeSolution = (solutionId: number, islike: boolean) => request.post("/common/like", {
+  target:"question",
+  islike,
+  targetId: solutionId
+}) as Promise<Response> 
 
 export const fetchDetailSolution = (answerId: number) => request.get("/answer/answerId", {
   params: {
