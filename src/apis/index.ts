@@ -20,7 +20,7 @@ const CodeMap = {
   [ErrorCode.Success]: "请求成功",
   [ErrorCode.UnAuthorized]: "请登陆",
   [ErrorCode.Connect_Fail]: "网络连接失败",
-  [ErrorCode.BadRequest]: "出现未知异常",
+  [ErrorCode.BadRequest]: "参数异常",
   [ErrorCode.Abort]: "请求取消"
 }
 let now = window.performance

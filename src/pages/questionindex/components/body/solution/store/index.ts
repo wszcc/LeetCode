@@ -76,13 +76,18 @@ export interface State {
   currentPage: number,
   solutionList: SolutionList[],
   showDetail: boolean,
-  answerId: number
+  answerId: number,
+  initial: boolean
 }
 
 export const reducer = produce((state: State, action: Actions) => {
   switch (action.type) {
+    case Types.FetchSolution:
+      state.initial = false
+      break
     case Types.GetSolutionList:
       state.solutionList = action.payload
+      state.initial = true
       break
     case Types.Sorting:
       state.sortType = action.payload
@@ -101,5 +106,6 @@ export const reducer = produce((state: State, action: Actions) => {
   currentPage: 1,
   solutionList: [],
   showDetail: false,
-  answerId: 0
+  answerId: 0,
+  initial: false
 } as State)

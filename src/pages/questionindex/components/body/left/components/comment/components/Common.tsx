@@ -1,11 +1,8 @@
 import { FC, memo, useContext, useRef, useState } from "react";
 import Editor, { EditorRef } from "../../mdEditor";
 import {
-  LikeOutlined,
   CommentOutlined,
   FormOutlined,
-  LikeFilled,
-  LoadingOutlined,
   ShareAltOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
@@ -13,9 +10,11 @@ import { Image } from "antd";
 import "../style.scss";
 import { getReply, sendComment } from "../../../../../../../../apis/comments";
 import { ErrorCode } from "../../../../../../../../apis";
-import { wrapRequest } from "../../../../../../../../utils/hooks";
-import { storage } from "../../../../../../../../utils/shared";
+import { Flags, getTime, storage } from "../../../../../../../../utils/shared";
 import { ActiveEditorId } from "..";
+import Loading from "../../../../../../../../components/loading";
+import LikeBtn from "../../../../../../../../components/likeBtn";
+import BraftEditor from "braft-editor";
 interface P {
   userName: string;
   avatar: string;
@@ -37,7 +36,7 @@ interface Sub {
   userId: string;
   commentId: string;
   commentTime: null | string;
-  thumbup: null | number;
+  thumbup: number | null;
   islike: number;
 }
 
@@ -55,7 +54,7 @@ const Common: FC<P> = ({
 }) => {
   const [sub, setSub] = useState<Sub[]>([]);
   const [showSub, setShowSub] = useState(false);
-  const [subLoading, setSubLoading] = useState(false);
+  const [flag, setFlag] = useState(Flags.Normal);
   const { id, setId } = useContext(ActiveEditorId);
   const editor = useRef<EditorRef>(null);
 
@@ -63,18 +62,17 @@ const Common: FC<P> = ({
     setShowSub(!showSub);
     if (sub.length) return;
     if (showSub) return;
-    setSubLoading(true);
+    setFlag(Flags.Pending);
     const res = await getReply(parentId);
-    setSubLoading(false);
     if (res.code === ErrorCode.Success) {
       setSub(res.data);
+      setFlag(Flags.Success);
+    } else {
+      setFlag(Flags.Fail);
     }
   };
 
   const dispatchComment = async () => {
-    console.log(editor.current?.getContent()!);
-    console.log(parentId);
-
     const res = await sendComment(
       parentId,
       storage.get("userId")!,
@@ -82,6 +80,7 @@ const Common: FC<P> = ({
     );
 
     if (res.code === ErrorCode.Success) {
+      
     }
   };
 
@@ -104,13 +103,23 @@ const Common: FC<P> = ({
             />
             <span>{userName}</span>
           </div>
-          <span className="comment-time">{commentTime}</span>
+          <span className="comment-time">{getTime(commentTime || "")}</span>
         </div>
-        <div className="item-content">{content}</div>
+        <div className="item-content">
+          <BraftEditor
+            value={BraftEditor.createEditorState(content)}
+            controls={[]}
+            readOnly={true}
+          />
+        </div>
         <div className="item-footer  flex ">
           <div>
-            {islike === 1 ? <LikeFilled /> : <LikeOutlined />}
-            {thumbup || 0}
+            <LikeBtn
+              islike={islike}
+              target="comment"
+              targetId={commentId}
+              likeNum={thumbup}
+            />
           </div>
           {isRoot && (
             <div onClick={queryReply}>
@@ -149,7 +158,7 @@ const Common: FC<P> = ({
                   key={i}
                   userName={item.nickname}
                   avatar={item.avatar}
-                  parentId={parentId}
+                  parentId={commentId}
                   islike={item.islike}
                   thumbup={item.thumbup ? item.thumbup : 0}
                   content={item.content}
@@ -159,11 +168,13 @@ const Common: FC<P> = ({
                 />
               );
             })}
-            {subLoading && (
+            {flag === Flags.Pending ? (
               <div style={{ textAlign: "center" }}>
-                <LoadingOutlined />
+                <Loading />
               </div>
-            )}
+            ) : flag === Flags.Fail ? (
+              "网络出错，请尝试刷新"
+            ) : null}
           </div>
         )}
       </div>
