@@ -1,11 +1,16 @@
+/* 
+
+
+
+*/
+
+
 import { Form, Button, Input } from 'antd';
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { EmptyUsername, EmptyPassword } from '../ErrorInfo/index'
-import './index.scss'
-
-
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
     beEmptyPwd,
     beEmptyUername,
@@ -19,36 +24,58 @@ import {
     keepUsernameDefault,
     onPwdChange,
     onUsernameChange
-} from '../../../store/actions/pwdLoginForm'
+} from '../../../store/actions/pwdLoginForm';
 
+import {IState} from '../../../store/reducers/pwdLoginForm';
+import { IRootState} from '../../../store/reducers/index'
+import './index.scss'
 
+interface BaseProps extends IState {
+    children?: React.ReactNode;
+    style?: {};
+    [key: string]: any;
+}
 
-
-const PhoneLoginForm = (props) => {
+const PhoneLoginForm: React.FC<BaseProps> = (props) => {
     const [form] = Form.useForm();
 
+    // state
+    const {
+        username,
+        password,
+        isInvalid,
+        isPwdEmpty,
+        isPwdKeepDefault,
+        isUsernameEmpty,
+        isUsernameKeepDefault
+    } = props;
 
-    const isUsernameKeepDefault = useSelector(state => state.pwdLoginForm.isUsernameKeepDefault, shallowEqual);
-    const isPwdKeepDefault = useSelector(state => state.pwdLoginForm.isPwdKeepDefault, shallowEqual);
-    const isInValid = useSelector(state => state.pwdLoginForm.isInvalid, shallowEqual);
-    const isUsernameEmpty = useSelector(state => state.pwdLoginForm.isUsernameEmpty, shallowEqual);
-    const isPwdEmpty = useSelector(state => state.pwdLoginForm.isPwdEmpty, shallowEqual);
-    const username = useSelector(state => state.pwdLoginForm.username, shallowEqual);
-    const password = useSelector(state => state.pwdLoginForm.password, shallowEqual);
-
-    const dispacth = useDispatch()
-
+    // dispatch
+    const {
+        beEmptyPwd,
+        beEmptyUername,
+        beInvalid,
+        notBeEmptyPwd,
+        notBeEmptyUsername,
+        notBeInvalid,
+        breakPwdDefault,
+        breakUsernameDefault,
+        keepPwdDefault,
+        keepUsernameDefault,
+        updateUsername,
+        updatePassword
+    } = props;
 
     // 将表单填入的信息提交
     const onFinish = () => {
         // const { username, password } = values;
         if (username === '') {
-            dispacth(breakUsernameDefault());
-            dispacth(beEmptyUername());
+            breakUsernameDefault();
+            beEmptyUername();
         }
         if (password === '') {
-            dispacth(breakPwdDefault());
-            dispacth(beEmptyPwd());
+            breakPwdDefault();
+            beEmptyPwd();
         }
 
         console.log(username, password);
@@ -60,31 +87,31 @@ const PhoneLoginForm = (props) => {
         }
     }, []);
 
-    const listenUsername = e => {
-        dispacth(keepUsernameDefault());
+    const listenUsername = (e: ChangeEvent<HTMLInputElement>) => {
+        keepUsernameDefault();
 
         let username = e.target.value;
 
         // 更新 username
-        dispacth(onUsernameChange(username));
+        updateUsername(username);
 
         // isEmpty
         const isEmpty = username === '';
-        if (isEmpty) dispacth(beEmptyUername());
-        else dispacth(notBeEmptyUsername());
+        if (isEmpty) beEmptyUername();
+        else notBeEmptyUsername();
     }
-    const listenPassword = e => {
-        dispacth(keepPwdDefault());
+    const listenPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        keepPwdDefault();
 
         let password = e.target.value;
 
         // 更新 password
-        dispacth(onPwdChange(password));
+        updatePassword(password);
 
         // isEmpty
         const isEmpty = password === '';
-        if (isEmpty) dispacth(beEmptyPwd());
-        else dispacth(notBeEmptyPwd());
+        if (isEmpty) beEmptyPwd();
+        else notBeEmptyPwd();
     }
    
 
@@ -101,7 +128,7 @@ const PhoneLoginForm = (props) => {
                 username: '',
                 password: ''
             }}
-            {...props}
+            style={props.style}
         >
             <Form.Item
                 className='pwd-login-form-item username-input-item'
@@ -163,5 +190,35 @@ const PhoneLoginForm = (props) => {
 }
 
 
+const mapStateToProps = (state: IRootState) => ({
+    isUsernameKeepDefault: state.pwdLoginForm.isUsernameKeepDefault,
+    isPwdKeepDefault: state.pwdLoginForm.isPwdKeepDefault,
+    isInValid: state.pwdLoginForm.isInvalid,
+    isUsernameEmpty: state.pwdLoginForm.isUsernameEmpty,
+    isPwdEmpty: state.pwdLoginForm.isPwdEmpty,
+    username: state.pwdLoginForm.username,
+    password: state.pwdLoginForm.password
+});
 
-export default PhoneLoginForm
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    updateUsername: (value: string) => dispatch(onUsernameChange(value)),
+    updatePassword: (value: string) => dispatch(onPwdChange(value)),
+
+    beEmptyPwd: () => dispatch(beEmptyPwd()),
+    notBeEmptyPwd: () => dispatch(notBeEmptyPwd()),
+
+    beEmptyUername: () => dispatch(beEmptyUername()),
+    notBeEmptyUsername: () => dispatch(notBeEmptyUsername()),
+
+    beInvalid: () => dispatch(beInvalid()),
+    notBeInvalid: () => dispatch(notBeInvalid()),
+
+    keepPwdDefault: () => dispatch(keepPwdDefault()),
+    breakPwdDefault: () => dispatch(breakPwdDefault()),
+
+    keepUsernameDefault: () => dispatch(keepUsernameDefault()),
+    breakUsernameDefault: () => dispatch(breakUsernameDefault())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneLoginForm);
+

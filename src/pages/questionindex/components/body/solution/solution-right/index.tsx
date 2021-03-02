@@ -10,9 +10,10 @@ import {
 } from "../../../../../../apis/solution";
 import { RootState } from "../../../../store";
 import { Flags } from "../../../../../../utils/shared";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import Comment from "../../left/components/comment";
-import MdEditor from "../../left/components/mdEditor";
+import Avatar from "antd/lib/avatar/avatar";
+import BraftEditor from "braft-editor";
 
 interface Props {
   dispatch: Dispatch;
@@ -50,14 +51,15 @@ const SolutionRight: FC<Props> = ({ dispatch, answerId }) => {
 const Main: FC<DetailInfo> = (props) => (
   <div className="main">
     <div className="solution-header flex a-center">
-      <img src={props.image} alt="头像" />
+      <Avatar icon={<UserOutlined />} src={props.image} alt="头像" />
       <span>{props.userName}</span>
     </div>
-    <div className="content">
-      {props.content}
-    </div>
-    <MdEditor />
-    <Comment parentId={props.answerId + ""} />
+    <BraftEditor
+      value={BraftEditor.createEditorState(props.content)}
+      controls={[]}
+      readOnly={true}
+    />
+    <Comment />
   </div>
 );
 

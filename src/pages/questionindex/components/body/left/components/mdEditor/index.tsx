@@ -1,5 +1,5 @@
 import "braft-editor/dist/index.css";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import BraftEditor from "braft-editor";
 import "./style.scss";
 import { Button } from "antd";
@@ -22,10 +22,19 @@ interface Props {
   mentionId?: number;
   mentionName?: string;
   onSubmit?(): void;
-  layout?: "up" | "down"
+  layout?: "up" | "down";
+  visible?: boolean;
+}
+
+export interface EditorRef {
+  getContent(): string;
+  close(): void;
+  getId(): number;
 }
 
 const controlsMin = ["code", "link", "font-size"];
+
+const getOwnId = () => (Math.random() * 100000) << 0;
 
 const MdEditor = forwardRef((props: Props, ref) => {
   const [editorState, setEditorState] = useState(
@@ -33,20 +42,39 @@ const MdEditor = forwardRef((props: Props, ref) => {
       props.mentionName ? `@${props.mentionName}&nbsp;` : ""
     )
   );
+  const [id, setId] = useState(0);
+  useEffect(() => {
+    setId(getOwnId());
+  }, []);
+
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    setVisible(props.visible === undefined ? true : props.visible);
+  }, [props.visible]);
 
   const sendComment = props.onSubmit || (() => {});
 
-  useImperativeHandle(ref, () => ({
-    getContent() {
-      return editorState.toHTML();
-    },
-  }));
+  useImperativeHandle(
+    ref,
+    (): EditorRef => ({
+      getContent() {
+        return editorState.toHTML();
+      },
+      close() {
+        setVisible(false);
+      },
+      getId() {
+        return id;
+      },
+    })
+  );
 
-  return (
+  return visible ? (
     <div className="md-wrap">
       <BraftEditor
         id="editor-with-code-highlighter"
-        className={props.layout === "down" ? "md-editor min": "md-editor"}
+        className={props.layout === "down" ? "md-editor min" : "md-editor"}
         onChange={setEditorState}
         value={editorState}
         controls={controlsMin as any}
@@ -55,6 +83,7 @@ const MdEditor = forwardRef((props: Props, ref) => {
         评论
       </Button>
     </div>
-  );
+  ) : null;
 });
+
 export default MdEditor;

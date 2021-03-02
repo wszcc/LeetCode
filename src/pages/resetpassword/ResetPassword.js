@@ -1,10 +1,8 @@
 import React from 'react'
-import { Provider } from 'react-redux'
+import ResetPwdWindow from './pages/validation/components/ResetPwdWindow/resetPwdWindow'
 
-import ResetPwdWindow from './components/ResetPwdWindow'
-
-const resetPassword = (props) =>{
-    return <div className='login'>
+const resetPassword = () =>{
+    return <div className='resetpassword'>
         <ResetPwdWindow />
     </div>
 }

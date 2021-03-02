@@ -1,34 +1,60 @@
 import { Form, Button, message } from 'antd';
 import React, { useEffect, useContext } from 'react';
-import PhoneInput from './PhoneInput'
-import CaptchaInput from './CaptchaInput'
-
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux'
+import PhoneInput, { IPhoneNumber } from './PhoneInput'
+import CaptchaInput, { ICaptcha } from './CaptchaInput'
 import { InvalidPhoneNumber, EmptyPhoneNumber, EmptyCaptcha } from '../ErrorInfo/index'
-import './index.scss'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { beEmptyCaptcha, breakCaptchaDefault } from '../../../store/actions/captchaInput'
 import { beEmptyNumber, breakPhoneDefault } from '../../../store/actions/phoneInput'
+import { IRootState } from '../../../store/reducers';
+import './index.scss'
 
 
+interface IMapState {
+    isPhoneKeepDefault: boolean;
+    isCaptchaKeepDefault: boolean;
+    isInValidPhone: boolean;
+    isPhoneEmpty: boolean;
+    isCaptchaEmpty: boolean;
+}
 
+interface IMapDipatch {
+    beEmptyCaptcha: () => void;
+    breakCaptchaDefault: () => void;
+    beEmptyNumber: () => void;
+    breakPhoneDefault: () => void;
+}
 
+interface IBaseProps extends IMapState, IMapDipatch {
+    children?: React.ReactNode;
+    style?: {};
+}
 
-
-const PhoneLoginForm = (props) => {
+const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
 
     const [form] = Form.useForm();
 
+    // state
+    const {
+        isPhoneKeepDefault,
+        isCaptchaKeepDefault,
+        isInValidPhone,
+        isPhoneEmpty,
+        isCaptchaEmpty
+    } = props;
 
-    const isPhoneKeepDefault = useSelector(state => state.phoneInput.isKeepDefault, shallowEqual);
-    const isCaptchaKeepDefault = useSelector(state => state.captchaInput.isKeepDefault, shallowEqual);
-    const isInValidPhoneNumber = useSelector(state => state.phoneInput.isInvalid, shallowEqual);
-    const isPhoneEmpty = useSelector(state => state.phoneInput.isEmpty, shallowEqual);
-    const isCaptchaEmpty = useSelector(state => state.captchaInput.isEmpty, shallowEqual);
+
+    // dispatch
+    const {
+        beEmptyCaptcha,
+        breakCaptchaDefault,
+        beEmptyNumber,
+        breakPhoneDefault
+    } = props;
+
 
     // const isPhoneInputOnBlur = useSelector(state => state.phoneInput.isOnBlur, shallowEqual);
-
-
-    const dispacth = useDispatch()
     /* 
 
         需求：
@@ -44,15 +70,15 @@ const PhoneLoginForm = (props) => {
 
 
     // 将表单填入的信息提交
-    const onFinish = (values) => {
-        const { captcha: { captchaValue }, phone: { phoneNumber } } = values;
-        if (captchaValue === '') {
-            dispacth(breakCaptchaDefault());
-            dispacth(beEmptyCaptcha());
+    const onFinish = (values: {captchaInput: ICaptcha, phoneInput: IPhoneNumber}) => {
+        const { captchaInput: { captcha }, phoneInput: { phone } } = values;
+        if ( captcha === '') {
+            breakCaptchaDefault();
+            beEmptyCaptcha();
         }
-        if (phoneNumber === '') {
-            dispacth(breakPhoneDefault());
-            dispacth(beEmptyNumber());
+        if (phone === '') {
+            breakPhoneDefault();
+            beEmptyNumber();
         }
 
         // message.error('验证码错误，请重新验证');
@@ -76,13 +102,13 @@ const PhoneLoginForm = (props) => {
                     captchaValue: ''
                 }
             }}
-            {...props}
+            style={props.style}
         >
             <Form.Item
                 style={
                     isPhoneKeepDefault ? { marginBottom: '24px'/* , backgroundColor: '#E8F0FE' */ } :
                         isPhoneEmpty ? { marginBottom: '40px' } :
-                            isInValidPhoneNumber ? { marginBottom: '40px' } :
+                            isInValidPhone ? { marginBottom: '40px' } :
                                 { marginBottom: '24px'/* , backgroundColor: '#E8F0FE' */ }
                 }
                 className='phone-login-form-item phone-input-item'
@@ -90,13 +116,13 @@ const PhoneLoginForm = (props) => {
                 help={
                     isPhoneKeepDefault ? <></> :
                         isPhoneEmpty ? <EmptyPhoneNumber /> :
-                            isInValidPhoneNumber ? <InvalidPhoneNumber /> :
+                            isInValidPhone ? <InvalidPhoneNumber /> :
                                 <></>
                 }
                 validateStatus={
                     isPhoneKeepDefault ? 'success' :
                         isPhoneEmpty ? 'error' :
-                        isInValidPhoneNumber ? 'error' : 'success'
+                        isInValidPhone ? 'error' : 'success'
                 }
             >
                 <PhoneInput />
@@ -141,9 +167,23 @@ const PhoneLoginForm = (props) => {
     )
 }
 
+const mapStateToProps = (state: IRootState): IMapState => ({
+    isPhoneKeepDefault: state.phoneInput.isKeepDefault,
+    isCaptchaKeepDefault: state.captchaInput.isKeepDefault,
+    isInValidPhone: state.phoneInput.isInvalid,
+    isPhoneEmpty: state.phoneInput.isEmpty,
+    isCaptchaEmpty: state.captchaInput.isEmpty
+});
 
 
-export default PhoneLoginForm
+const mapDispatchToProps = (dispatch: Dispatch): IMapDipatch => ({
+    beEmptyCaptcha: () => void dispatch(beEmptyCaptcha()),
+    breakCaptchaDefault: () => void dispatch(breakCaptchaDefault()),
+    beEmptyNumber: () => void dispatch(beEmptyNumber()), 
+    breakPhoneDefault: () => void dispatch(breakPhoneDefault())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneLoginForm);
 
 
 
