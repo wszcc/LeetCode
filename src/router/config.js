@@ -15,11 +15,11 @@ const routerView =[
     component: Profile,
   },
   {
-    path: "/quesionlist",
+    path: "/questionlist",
     component: QuestionList,
   },
   {
-    path: "/questionindex",
+    path: "/questionindex/:id",
     component: QuestionIndex,
   },
   {

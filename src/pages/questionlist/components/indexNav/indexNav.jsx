@@ -13,9 +13,6 @@ class Sider extends React.Component {
   };
 
    
-
-
-
   render() {
     return (
         <Router>   <div>
