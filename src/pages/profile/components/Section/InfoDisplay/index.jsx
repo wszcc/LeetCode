@@ -19,7 +19,7 @@ const InfoDisply = (props) => {
         // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
         'code': 200,
         'message':"ok",
-        'data|20': [{
+        'data|15': [{
             "questionNum|1-1900": 1,
             'questionId|14332-682222': 1,
             'title|1': ["两数之和", "编辑距离", "三数之和"],
@@ -29,8 +29,10 @@ const InfoDisply = (props) => {
 
     useEffect(() => {
     })
-    function reqRecord() {
-        props.getHistoryData()  
+    function reqRecord(e) {
+        if(e == '1') {
+            props.getHistoryData()  
+        }
     }
     return (
         <div className="pro-show-history">
@@ -64,7 +66,9 @@ const InfoDisply = (props) => {
                                     </div>
                                 )
                             })}
-                            
+                            <div className="pro-load">
+                                <div className="pro-loadingmore">加载更多...</div>
+                            </div>
                         </TabPane>
                         <TabPane tab={<span>
                             <img src={urlDiscuss} alt=""/>
