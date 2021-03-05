@@ -1,0 +1,25 @@
+.pro-month-record {
+    display: flex;
+    justify-content: space-between;
+    width: 746px;
+    height: 96.26px;
+    .pro-month-num {
+        display: flex;
+        justify-content: space-between;
+        width: 51.27px;
+        height: 72.77px;
+        .pro-month-cloum {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 8.27px;
+            height: 100%;
+            span {
+                width: 8.27px;
+                height: 8.27px;
+                cursor: pointer;
+                background-color: rgb(234, 234, 234);
+            }
+        }
+    }
+}

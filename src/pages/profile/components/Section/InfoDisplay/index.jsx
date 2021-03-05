@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {Tabs} from 'antd'
 import {proReqHistory} from '../../../store/actions/proReqHistory_action'
 import './index.scss'
@@ -47,7 +48,7 @@ const InfoDisply = (props) => {
                                     <div className="pro-show" key={value.questionId}>
                                         <div className="left">
                                             <span>我在题目</span>
-                                            <span className="same tixing">{value.questionNum}.{value.title}</span>
+                                            <Link className="same tixing" to="/questionindex/:id">{value.questionNum}.{value.title}</Link>
                                             <span className="same">中使用</span>
                                             <span className="same">java</span>
                                             <span className="same">进行了提交</span>
