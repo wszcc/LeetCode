@@ -1,0 +1,26 @@
+.email-register-form {
+    width: 320px;
+    margin: 0 auto 0 auto;
+
+    .email-register-form-item {
+        margin-bottom: 12px;
+        .ant-form-item-explain,
+        .ant-form-item-extra {
+            min-height: 0;
+        }
+        .email-register-input {
+            border-radius: 5px;
+            height: 38px;
+        }
+
+    }
+
+    .email-register-btn-item {
+        margin-bottom: 5px;
+        .email-register-btn-input {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+    }
+}
