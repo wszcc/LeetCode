@@ -5,6 +5,7 @@ import { Modal } from 'antd'
 import { Main_Dark, Main_Light } from "../../config/colors"
 import request, { ErrorCode, Response } from '../../apis'
 import { useParams } from "react-router"
+import classNames from 'classnames'
 interface Update<T> {
   (updateFn: (draft: Immutable<T>) => void): void
 }
@@ -122,8 +123,10 @@ export const useCaptcha = (
 
   useEffect(() => {
     setBtnStatus({
-      children: `${isLoading ? '发送中' : isCountDown ? seconds + ' 秒后可重发' : '获取验证码'
-        }`,
+      children: `${
+        isLoading ? '发送中' : 
+        isCountDown ? (seconds + ' 秒后可重发') : '获取验证码'
+      }`,
       btnProps: {
         loading: isLoading,
         disabled: isDisabled
@@ -182,11 +185,26 @@ export const useCaptcha = (
       // 按钮停止 loading：请求结束 
       setIsLoading(false);
 
-      // 开始倒计时
+        // 开始倒计时
       setIsCountDown(true);
+
       startCountDown();
-    }, 500);
+
+
+
+    }, 1000);
   }
 
   return [getCaptcha, btnStatus];
+}
+
+// deps 用来存放交互过程中可能会改变的状态
+const useClassNames = (baseClassName: string, deps: any[]): string => {
+  useEffect(() => {
+    classNames(baseClassName, {
+
+    })
+  }, deps)
+
+  return ''
 }
