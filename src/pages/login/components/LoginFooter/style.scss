@@ -1,0 +1,63 @@
+$icon-list: qq sina wechat other;
+$icon-color-list: rgb(74, 154, 253) rgb(233, 14, 36) rgb(0, 202, 0) gray;
+
+.login-card-ways {
+    width: 320px;
+    margin: 10px auto 0 auto;
+    display: flex;
+    justify-content: space-around;
+    .icon-warp {
+        width: 36px;
+        height: 36px;
+        border: rgb(196, 196, 196) 1px solid;
+        border-radius: 100%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+            font-size: 20px;
+        }
+
+        // @for $i from 1 through 4 {
+        //     .#{nth($icon-list, i)} {
+        //         color: nth($icon-color-list, i);
+        //     }
+        // }
+        .qq {
+            color: rgb(74, 154, 253);
+        }
+        .sina {
+            color: rgb(233, 14, 36);
+        }
+        .wechat {
+            color: rgb(0, 202, 0);
+        }
+        .other {
+            color: gray;
+        }
+    }
+}
+
+.login-card-footer {
+    font-size: 12px;
+    color: rgb(190, 187, 187);
+    .login-card-footer-top {
+        text-align: center;
+        margin: 30px 0 10px 0;
+        .sp {
+            font-size: 13px;
+            color: gray;
+            cursor: pointer;
+        }
+    }
+    .login-card-footer-buttom {
+        display: flex;
+        justify-content: center;
+        .item {
+            margin: 0 5px 0 5px;
+            cursor: pointer;
+        }
+    }
+}
