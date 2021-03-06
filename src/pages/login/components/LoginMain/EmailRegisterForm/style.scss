@@ -11,8 +11,32 @@
         border-radius: 5px;
         height: 38px;
     }
-
 }
+
+
+
+.captcha-item-warp {
+    display: flex;
+    justify-content: space-between;
+    .email-register-captcha-item {
+        display: inline-block;
+
+        &.input-item {
+            width: 55%;
+        }
+
+        &.button-item {
+            height: 38px;
+
+            .ant-btn {
+                height: 38px;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+
 
 .email-register-btn-item {
     margin-bottom: 5px;

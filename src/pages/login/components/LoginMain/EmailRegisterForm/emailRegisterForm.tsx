@@ -1,7 +1,8 @@
-import React, { CSSProperties, useState } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import { Form, Input, Button } from 'antd'
 import request from '../../../../../apis/index'
 import './style.scss';
+import { useCaptcha } from '../../../../../utils/hooks';
 
 
 interface IBaseProps {
@@ -15,17 +16,31 @@ interface IFormValues {
     captcha: string
 }
 
+enum InputType {
+    Email = 'email',
+    Password = 'password',
+    Captcha = 'captcha'
+}
+
+interface IValueObj {
+    email?: string;
+    password?: string;
+    captcha?: string;
+}
+
 const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
-    const {style} = props;
+    const { style } = props;
 
     const [isPwdInputOnBlur, setIsPwdInputOnBlur] = useState(false);
     const [isEmailInputOnBlur, setIsEmailInputOnBlur] = useState(false);
-
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [captcha, setCaptcha] = useState('');
 
 
 
     const onFinish = (values: IFormValues) => {
-        const {email, password} = values;
+        const { email, password, captcha } = values;
 
         // request.post('user/register', {
         //     registerBody: email,
@@ -41,16 +56,39 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
         console.log(values);
     }
 
-    const onValuesChange = (values: IFormValues) => {
-        // console.log(values);
+    const onValuesChange = (valueObj: IValueObj) => {
+        const changeType = Object.keys(valueObj)[0];
+        switch(changeType) {
+            case InputType.Email:
+                const email = valueObj.email as string;
+                setEmail(email)
+                break;
+            case InputType.Password:
+                const password = valueObj.password as string;
+                setEmail(password)
+                break;
+            case InputType.Captcha:
+                const captcha = valueObj.captcha as string;
+                setEmail(captcha)
+                break;
+        }
     }
 
-    const getCaptcha = () => {
-        // request.post('user/requestcode')
-    }
+    const [getCaptcha, IBtnStatus] = useCaptcha('email', email, 5, []);
+
+    // const getCaptcha = () => {
+    //     request.post('user/requestcode', {
+    //         method: 'email',
+    //         number: email
+    //     }).then(reponse => {
+    //         console.log(reponse);
+    //     }).catch(reason => {
+    //         console.log(reason);
+    //     })
+    // }
 
     return (
-        <Form 
+        <Form
             className='email-register-form'
             style={style}
             initialValues={{
@@ -75,7 +113,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                             if (!isValid && isEmailInputOnBlur && email != '') {
                                 return Promise.reject(new Error('邮箱地址不合法'))
                             }
-                            
+
                             return Promise.resolve();
                         },
                     })
@@ -111,36 +149,42 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                 ]}
                 validateTrigger={['onBlur', 'onChange']}
             >
-                <Input.Password 
+                <Input.Password
                     className='email-register-input email-register-password-input'
                     placeholder='输入密码'
                     onBlur={() => setIsPwdInputOnBlur(true)}
                     onFocus={() => setIsPwdInputOnBlur(false)}
                 />
             </Form.Item>
-
-            <Form.Item
-                className='email-register-form-item email-register-captcha-item'
-                name='captcha'
-                rules={[
-                    { required: true, message: '请输入验证码', validateTrigger: 'onBlur' }
-                ]}
-                validateTrigger={['onChange', 'onBlur']}
-            >
-                <Input 
-                    className='email-register-input email-register-captcha-input'
-                    placeholder='输入验证码'
-                />
-                
-            </Form.Item>
-
-            <Form.Item>
-                <Button 
-                    onClick={getCaptcha}
+            <div className='captcha-item-warp'>
+                <Form.Item
+                    className='email-register-form-item email-register-captcha-item input-item'
+                    name='captcha'
+                    rules={[
+                        { required: true, message: '请输入验证码', validateTrigger: 'onBlur' }
+                    ]}
+                    validateTrigger={['onChange', 'onBlur']}
                 >
-                    获取验证码
+                    <Input
+                        className='email-register-input email-register-captcha-input'
+                        placeholder='输入验证码'
+                    />
+
+                </Form.Item>
+
+
+                <Form.Item
+                    className='email-register-form-item email-register-captcha-item button-item'
+                >
+                    <Button
+                        onClick={getCaptcha}
+                        // loading={true}
+                        {...IBtnStatus.btnProps}
+                    >
+                        {IBtnStatus.children}
                 </Button>
-            </Form.Item>
+                </Form.Item>
+            </div>
 
             <Form.Item
                 className='email-register-form-item email-register-btn-item'
@@ -153,6 +197,11 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                     注册
                 </Button>
             </Form.Item>
+
+
+
+
+
         </Form>
     )
 }
