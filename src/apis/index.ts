@@ -103,10 +103,10 @@ request.interceptors.response.use(
           }
         }
         return {
-          ...err,
           data: {
             message: err.data.message,
-            code: ErrorCode.Abort
+            code: ErrorCode.Abort,
+            data: err
           }
         }
       }
@@ -114,7 +114,6 @@ request.interceptors.response.use(
        *  比如onClick={func}, 把e传进了请求参数导致axiosJSON.stringify报错
        */
       return {
-        ...err,
         data: {
           data: err,
           message: "网络异常",
@@ -145,7 +144,7 @@ request.interceptors.response.use(
         return {
           code: code,
           message: res.data.message,
-          data: null
+          data: res.data?.data
         }
     }
   }
