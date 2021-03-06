@@ -26,7 +26,7 @@ const ListIndex = (props)=>{
         
           return <List.Item>
               <div id="item_message">
-                <div id="data_title"><Link to= {`/questionindex/${data.questionId}`} replace>{data.title}</Link></div>
+                <div id="data_title"><Link to= {`/questionindex/${data.questionId}`} >{data.title}</Link></div>
                 
                 <div id="data_message">
                     <div id="data_answer_num">{data.answer_num}</div>

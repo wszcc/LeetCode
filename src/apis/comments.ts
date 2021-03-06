@@ -49,3 +49,4 @@ export const getCommit = (questionId:string) => axios.post('/commit/all', {quest
 export const exeCode = (questionId:string,code:string,testCase:string) => axios.post('/question/run',{questionId, code, testCase}) as Promise<Response>
 
 export const  submitCode = (questionId:string, code:string) => axios.post ('/question/commit',{questionId, code}) as Promise<Response>
+
