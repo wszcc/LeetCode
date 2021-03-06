@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Flags, LooseObj } from "../shared"
 import { Modal } from 'antd'
 import { Main_Dark, Main_Light } from "../../config/colors"
-import { ErrorCode, Response } from '../../apis'
+import request, { ErrorCode, Response } from '../../apis'
 import { useParams } from "react-router"
 interface Update<T> {
   (updateFn: (draft: Immutable<T>) => void): void
@@ -13,6 +13,14 @@ interface IConfirm {
   title?: string
   onOk?(): void
   onCancel?(): void
+}
+
+interface IBtnStatus {
+  children: string;
+  btnProps: {
+    loading: boolean,
+    disabled: boolean
+  }
 }
 
 export const useImmer = <T extends LooseObj>(initState: T): [T, Update<T>] => {
@@ -84,4 +92,101 @@ export const useGetQuestionId = () => {
     questionId: string | undefined
   }>()
   return questionId
+}
+
+
+export const useCaptcha = (
+  type: 'email' | 'phone', 
+  sendTarget: string, 
+  initSeconds = 60, 
+  deps: any[]
+): [() => void, IBtnStatus] => {
+  const [seconds, setSeconds] = useState(initSeconds);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isCountDown, setIsCountDown] = useState(false);
+
+  const [btnStatus, setBtnStatus] = useState<IBtnStatus>({
+    children: '获取验证码',
+    btnProps: {
+      loading: false,
+      disabled: true
+    }
+  });
+
+  // 只有所有的 deps 全部有效后，captchaBtn 才能点击
+  useEffect(() => {
+    const res = deps.reduce((pre, current) => pre &= current, true);
+    setIsDisabled(!res);
+  }, deps)
+
+  useEffect(() => {
+    setBtnStatus({
+      children: `${isLoading ? '发送中' : isCountDown ? seconds + ' 秒后可重发' : '获取验证码'
+        }`,
+      btnProps: {
+        loading: isLoading,
+        disabled: isDisabled
+      }
+    })
+  }, [seconds, isLoading, isCountDown, isDisabled])
+
+
+  let timer: any;
+  const startCountDown = () => {
+
+    // 倒计时60秒
+    // setSeconds(5);
+
+    let countDownTime = initSeconds;
+    // 每隔一秒，countDownTime 减 1
+    timer = setInterval(() => {
+
+      // countDownTime 为 0 时停止倒计时
+      if (countDownTime <= 1) {
+        setSeconds(initSeconds);
+        setIsCountDown(false);
+        setIsDisabled(false)
+        clearInterval(timer);
+        return;
+      }
+      countDownTime -= 1;
+      setSeconds(countDownTime);
+    }, 1000);
+  }
+
+  // 点击获取验证码
+  const getCaptcha = () => {
+    // 按钮 loading：正在发送请求
+    setIsLoading(true);
+    setIsDisabled(true)
+
+    // request.post('user/requestcode', {
+    //   method: type,
+    //   number: sendTarget
+    // }).then(reponse => {
+
+    //   // 停止 loading
+    //   setIsLoading(false);
+    //   // 开始倒计时
+    //   setIsCountDown(true);
+    //   startCountDown();
+    //   console.log(reponse);
+
+    // }).catch(reason => {
+    //   console.log(reason);
+    // })
+    
+
+    setTimeout(() => {
+      // 按钮停止 loading：请求结束 
+      setIsLoading(false);
+
+      // 开始倒计时
+      setIsCountDown(true);
+      startCountDown();
+    }, 500);
+  }
+
+  return [getCaptcha, btnStatus];
 }
