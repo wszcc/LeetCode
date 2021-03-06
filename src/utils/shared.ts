@@ -108,7 +108,7 @@ export function getTime(time: string): string {
   const days = hours * 24
   const months = days * 30
   const years = days * 365
-  let res: string = '1小时前'
+  let res: string = '刚刚'
   let createTime = Date.parse(time)
   let nowTime = Date.parse((new Date()).toString())
   let subTime = nowTime - createTime

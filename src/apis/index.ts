@@ -20,7 +20,7 @@ const CodeMap = {
   [ErrorCode.Success]: "请求成功",
   [ErrorCode.UnAuthorized]: "请登陆",
   [ErrorCode.Connect_Fail]: "网络连接失败",
-  [ErrorCode.BadRequest]: "出现未知异常",
+  [ErrorCode.BadRequest]: "参数异常",
   [ErrorCode.Abort]: "请求取消"
 }
 let now = window.performance
@@ -40,6 +40,7 @@ const whiteList = new Set([
   '/user/checkEmail',
   '/user/checkUserId',
   '/user/sendActiveMail',
+  'user/requestcode',
   '/user/logout',
   '/user/findBackPassword',
   '/user/checkUserLegality',
@@ -103,17 +104,19 @@ request.interceptors.response.use(
           }
         }
         return {
-          ...err,
           data: {
             message: err.data.message,
-            code: ErrorCode.Abort
+            code: ErrorCode.Abort,
+            data: err
           }
         }
       }
-      /** 网络异常 */
+      /** 网络异常 或者 请求代码执行出错，可能是参数错误，
+       *  比如onClick={func}, 把e传进了请求参数导致axiosJSON.stringify报错
+       */
       return {
-        ...err,
         data: {
+          data: err,
           message: "网络异常",
           code: ErrorCode.Connect_Fail
         }
@@ -142,7 +145,7 @@ request.interceptors.response.use(
         return {
           code: code,
           message: res.data.message,
-          data: null
+          data: res.data?.data
         }
     }
   }

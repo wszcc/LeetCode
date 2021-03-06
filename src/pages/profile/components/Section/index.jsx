@@ -3,6 +3,7 @@ import { Statistic, Menu, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons';
 import QuestionInfo from './QuestionInfo'
 import InfoDisplay from './InfoDisplay'
+import RecordMonth from './recordMonth'
 import './index.scss'
 
 
@@ -39,7 +40,19 @@ const Section = () => {
                         </Dropdown>
                     </div>
                 </div>
-                <div className="pro-month-record"></div>
+                <div className="pro-month-record">
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                    <RecordMonth/>
+                </div>
             </div>
             <InfoDisplay/>
         </div>

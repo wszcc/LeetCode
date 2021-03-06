@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {Tabs} from 'antd'
 import {proReqHistory} from '../../../store/actions/proReqHistory_action'
 import './index.scss'
@@ -19,7 +20,7 @@ const InfoDisply = (props) => {
         // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
         'code': 200,
         'message':"ok",
-        'data|20': [{
+        'data|15': [{
             "questionNum|1-1900": 1,
             'questionId|14332-682222': 1,
             'title|1': ["两数之和", "编辑距离", "三数之和"],
@@ -29,8 +30,10 @@ const InfoDisply = (props) => {
 
     useEffect(() => {
     })
-    function reqRecord() {
-        props.getHistoryData()  
+    function reqRecord(e) {
+        if(e == '1') {
+            props.getHistoryData()  
+        }
     }
     return (
         <div className="pro-show-history">
@@ -45,7 +48,7 @@ const InfoDisply = (props) => {
                                     <div className="pro-show" key={value.questionId}>
                                         <div className="left">
                                             <span>我在题目</span>
-                                            <span className="same tixing">{value.questionNum}.{value.title}</span>
+                                            <Link className="same tixing" to="/questionindex/:id">{value.questionNum}.{value.title}</Link>
                                             <span className="same">中使用</span>
                                             <span className="same">java</span>
                                             <span className="same">进行了提交</span>
@@ -64,7 +67,9 @@ const InfoDisply = (props) => {
                                     </div>
                                 )
                             })}
-                            
+                            <div className="pro-load">
+                                <div className="pro-loadingmore">加载更多...</div>
+                            </div>
                         </TabPane>
                         <TabPane tab={<span>
                             <img src={urlDiscuss} alt=""/>

@@ -1,7 +1,7 @@
 import React from 'react';
-import LoginWindow from '../LoginWindow/index'
+import LoginWindow from '../LoginWindow/loginWindow'
 import Logo from '../../../../assets/imgs/logo_white.svg';
-import './index.scss'
+import './style.scss'
 
 const WindowWarp: React.FC = () => {
     return (

@@ -14,6 +14,7 @@ import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import Comment from "../../left/components/comment";
 import Avatar from "antd/lib/avatar/avatar";
 import BraftEditor from "braft-editor";
+import Loading from "../../../../../../components/loading";
 
 interface Props {
   dispatch: Dispatch;
@@ -37,7 +38,9 @@ const SolutionRight: FC<Props> = ({ dispatch, answerId }) => {
       </header>
       <div className="sr-content">
         {flag === Flags.Pending ? (
-          <LoadingOutlined />
+          <div className="flex j-center a-center">
+            <Loading size="large" />
+          </div>
         ) : flag === Flags.Success ? (
           <Main {...data} />
         ) : (

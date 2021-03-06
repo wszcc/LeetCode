@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux'
 import store from './store/index'
-import WindowWarp from './components/WindowWarp'
+import WindowWarp from './components/WindowWarp/windowWarp'
 
 
 const Login = (props) =>{

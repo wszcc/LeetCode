@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import {
     QqOutlined,
     GithubOutlined,
@@ -6,12 +6,19 @@ import {
     WechatOutlined,
     EllipsisOutlined
 } from '@ant-design/icons'
-import './index.scss'
+import './style.scss'
 
+interface IBaseProps {
+    children?: React.ReactNode;
+    style?: CSSProperties;
+}
 
-const Footer: React.FC = () => {
+const Footer: React.FC<IBaseProps> = (props) => {
+
+    const {style} = props;
+
     return (
-        <>
+        <div className='login-window-footer' style={style}>
             <div className='login-card-ways'>
                 <div className='login-card-ways-item'>
                     <div className='icon-warp'>
@@ -48,7 +55,7 @@ const Footer: React.FC = () => {
                     <div className='item'>帮助中心</div>
                 </div>
             </div>        
-        </>
+        </div>
     )
 }
 export default Footer

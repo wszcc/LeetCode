@@ -8,11 +8,10 @@ export interface Comment {
   "nickname": string,
   "avatar": string,
   "commentTime": string,
-  "thumbup": 0 | 1,
+  "thumbup": number,
   "replyNum": number | null,
   "islike": number
 }
-
 
 export const queryComments = (pageNum: number, parentId: number) => request.post("/comment/get", {
   pageNum, parentId
@@ -44,9 +43,13 @@ export const likeQuestion = (
   targetid: string
 ) => axios.post('/common/like', { target, targetid, islike }) as Promise<Response>
 
-export const getCommit = (questionId:string) => axios.post('/commit/all', {questionId}) as Promise<Response>
+export const getCommit = (questionId: string) => axios.post('/commit/all', { questionId }) as Promise<Response>
 
-export const exeCode = (questionId:string,code:string,testCase:string) => axios.post('/question/run',{questionId, code, testCase}) as Promise<Response>
+export const exeCode = (questionId: string, code: string, testCase: string) => axios.post('/question/run', { questionId, code, testCase }) as Promise<Response>
 
+<<<<<<< HEAD
 export const  submitCode = (questionId:string, code:string) => axios.post ('/question/commit',{questionId, code}) as Promise<Response>
 
+=======
+export const submitCode = (questionId: string, code: string) => axios.post('/question/commit', { questionId, code }) as Promise<Response>
+>>>>>>> 5d8d99347bb0eed76179775a9285ab2d3e5aca9c
