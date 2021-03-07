@@ -136,6 +136,13 @@ export const useCaptcha = (
 
 
   let timer: any;
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timer)
+    }
+  });
+
   const startCountDown = () => {
 
     // 倒计时60秒
@@ -160,39 +167,46 @@ export const useCaptcha = (
 
   // 点击获取验证码
   const getCaptcha = () => {
+
+    if (type === 'email') {
+      const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      if (!reg.test(sendTarget)) {
+        return;
+      }
+    }
     // 按钮 loading：正在发送请求
     setIsLoading(true);
     setIsDisabled(true)
 
-    // request.post('user/requestcode', {
-    //   method: type,
-    //   number: sendTarget
-    // }).then(reponse => {
+    request.post('user/requestcode', {
+      method: type,
+      number: sendTarget
+    }).then(reponse => {
 
-    //   // 停止 loading
-    //   setIsLoading(false);
-    //   // 开始倒计时
-    //   setIsCountDown(true);
-    //   startCountDown();
-    //   console.log(reponse);
+      // 停止 loading
+      setIsLoading(false);
+      // 开始倒计时
+      setIsCountDown(true);
+      startCountDown();
+      console.log(reponse);
 
-    // }).catch(reason => {
-    //   console.log(reason);
-    // })
+    }).catch(reason => {
+      console.log(reason);
+    })
     
 
-    setTimeout(() => {
-      // 按钮停止 loading：请求结束 
-      setIsLoading(false);
+    // setTimeout(() => {
+    //   // 按钮停止 loading：请求结束 
+    //   setIsLoading(false);
 
-        // 开始倒计时
-      setIsCountDown(true);
+    //   if (!isLoading) {
+    //     // 开始倒计时
+    //     setIsCountDown(true);
 
-      startCountDown();
+    //     startCountDown();
+    //   }
 
-
-
-    }, 1000);
+    // }, 1000);
   }
 
   return [getCaptcha, btnStatus];

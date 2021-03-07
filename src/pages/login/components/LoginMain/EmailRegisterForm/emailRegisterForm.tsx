@@ -41,19 +41,19 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
 
     const onFinish = (values: IFormValues) => {
         const { email, password, captcha } = values;
+        console.log(email, password, captcha);
 
-        // request.post('user/register', {
-        //     registerBody: email,
-        //     password,
-        //     authcode: '123',
-        //     method: 'email'
-        // }).then(values => {
-        //     console.log(values);
-        // }).catch(err => {
-        //     console.log(err);
-        // })
-
-        console.log(values);
+        request.post('user/register', {
+            registerBody: email,
+            password,
+            authCode: Number(captcha),
+            method: 'email'
+            
+        }).then(value => {
+            console.log(value);
+        }).catch(reason => {
+            console.log(reason);
+        });
     }
 
     const onValuesChange = (valueObj: IValueObj) => {
@@ -65,27 +65,16 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                 break;
             case InputType.Password:
                 const password = valueObj.password as string;
-                setEmail(password)
+                setPassword(password)
                 break;
             case InputType.Captcha:
                 const captcha = valueObj.captcha as string;
-                setEmail(captcha)
+                setCaptcha(captcha)
                 break;
         }
     }
 
     const [getCaptcha, IBtnStatus] = useCaptcha('email', email, 5, []);
-
-    // const getCaptcha = () => {
-    //     request.post('user/requestcode', {
-    //         method: 'email',
-    //         number: email
-    //     }).then(reponse => {
-    //         console.log(reponse);
-    //     }).catch(reason => {
-    //         console.log(reason);
-    //     })
-    // }
 
     return (
         <Form

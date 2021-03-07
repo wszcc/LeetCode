@@ -22,13 +22,14 @@
         display: inline-block;
 
         &.input-item {
-            width: 55%;
+            width: 60%;
         }
 
         &.button-item {
             height: 38px;
-
+        
             .ant-btn {
+                width: 120px;
                 height: 38px;
                 border-radius: 5px;
             }
