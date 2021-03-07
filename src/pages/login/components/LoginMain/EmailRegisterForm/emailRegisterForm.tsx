@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import request from '../../../../../apis/index'
 import './style.scss';
 import { useCaptcha } from '../../../../../utils/hooks';
@@ -43,14 +43,14 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
         const { email, password, captcha } = values;
         console.log(email, password, captcha);
 
-        request.post('user/register', {
+        request.post('/user/register', {
             registerBody: email,
             password,
             authCode: Number(captcha),
             method: 'email'
-            
+
         }).then(value => {
-            console.log(value);
+            message.success('注册成功！')
         }).catch(reason => {
             console.log(reason);
         });

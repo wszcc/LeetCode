@@ -40,7 +40,7 @@ const whiteList = new Set([
   '/user/checkEmail',
   '/user/checkUserId',
   '/user/sendActiveMail',
-  'user/requestcode',
+  '/user/requestcode',
   '/user/logout',
   '/user/findBackPassword',
   '/user/checkUserLegality',

@@ -178,7 +178,7 @@ export const useCaptcha = (
     setIsLoading(true);
     setIsDisabled(true)
 
-    request.post('user/requestcode', {
+    request.post('/user/requestcode', {
       method: type,
       number: sendTarget
     }).then(reponse => {

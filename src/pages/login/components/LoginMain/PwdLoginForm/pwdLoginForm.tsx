@@ -1,6 +1,9 @@
 
 import { Form, Button, Input } from 'antd';
 import React, { CSSProperties } from 'react';
+import request from '../../../../../apis';
+import { storage } from '../../../../../utils/shared';
+import { ILoginParams, Method } from '../types';
 import './style.scss'
 
 
@@ -14,12 +17,27 @@ interface IBaseProps {
     style?: CSSProperties;
 }
 
+
 const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
     const [form] = Form.useForm();
 
     // 将表单填入的信息提交
     const onFinish = (values: IFormValues) => {
-        console.log(values);
+        const {username, password} = values;
+
+        const params: ILoginParams = {
+            registerBody: username,
+            password,
+            method: Method.Email
+        }   
+
+        request.post('/user/login', params).then(value => {
+            console.log(value);
+            console.log(storage.get('token'));
+            
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     const onValuesChange = (value: {username: string} | {password: string}) => {
