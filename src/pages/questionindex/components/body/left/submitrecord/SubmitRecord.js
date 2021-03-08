@@ -1,4 +1,4 @@
-import { Table, Tag, Space } from "antd";
+import { Table, } from "antd";
 import { memo, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getCommit } from '../../../../../../apis/comments'
@@ -33,12 +33,8 @@ const SubmitRecord = (props) => {
     getCommit('josdnf')
     .then(res =>{
       setCommitList(getKeys(res.data.data.commitList))
-      console.log(getKeys(res.data.data.commitList))
     })
   },[])
-  useEffect(() =>{
-    console.log(props)
-  })
   return (
     <div className="submit-record">
       {

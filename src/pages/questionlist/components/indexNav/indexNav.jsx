@@ -3,7 +3,6 @@ import { Menu } from 'antd';
 import '../indexNav/indexNav.css'
 import {difficulty,status} from '../../router/config'
 import { Link,HashRouter as Router } from "react-router-dom";
-import RandomStart from '../randomStart/index'
 import Search from '../search/index'
 
 const { SubMenu } = Menu;
@@ -18,9 +17,6 @@ class Sider extends React.Component {
         <Router>   <div>
            
         <div id='navWrap'>
-          <div id="button_start">
-            <RandomStart />
-          </div>
           
           <div id= "search">
             <Search/>

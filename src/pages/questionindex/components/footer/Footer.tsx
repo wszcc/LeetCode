@@ -1,4 +1,4 @@
-import React,{ FC, useEffect, useRef, useState } from 'react'
+import { FC,  useRef, useState } from 'react'
 import './style.scss'
 import { exeCode, submitCode } from '../../../../apis/comments'
 import { message } from 'antd'

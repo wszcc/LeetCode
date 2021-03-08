@@ -36,7 +36,7 @@ export const sendComment = (parentId: string, userId: string, content: string) =
 
 export const setLike = (targetId: string, islike: boolean, target = "comment") => request.post("/common/like", { targetId, target, islike })
 
-export const getDescData = (questionId?: string) => axios.get('/question/start', { params: { questionId } }) as Promise<Response>
+export const getDescData = (questionId: string) => axios.get(`/question/start`) as Promise<Response>
 export const likeQuestion = (
   target: string,
   islike: boolean,

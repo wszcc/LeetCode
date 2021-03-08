@@ -1,7 +1,6 @@
 #navWrap{
     display: flex;
     justify-content: flex-end;
-    border-bottom: 1px gray solid;
     height: 50px;
     line-height: 50px;
 }

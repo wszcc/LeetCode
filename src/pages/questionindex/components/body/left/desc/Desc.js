@@ -3,6 +3,8 @@ import "../../../../../../mock/questionIndex.js";
 import { getDescData, likeQuestion,  } from "../../../../../../apis/comments";
 import DiffTag from "../components/dif-tag/DigTag";
 import { devContetn } from "../../../../../../utils/shared";
+import { withRouter } from 'react-router-dom'
+import { useParams } from "react-router";
 import {
   likeAction,
   unLikeAction,
@@ -22,6 +24,7 @@ import {
 import { Fragment, useEffect, useState, memo } from "react";
 import { connect } from "react-redux";
 const Desc = (props) => {
+  const {id} = useParams()
   let [descData, setDescData] = useState({ code: 0 });
   let {
     like,
@@ -32,7 +35,7 @@ const Desc = (props) => {
     dispatchUnCollect,
   } = props;
   useEffect(() => {
-    getDescData().then((res) => {
+    getDescData(id).then((res) => {
       setDescData(res.data);
     });
   }, [descData.code]);
@@ -134,4 +137,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(Desc);
+export default connect(mapState, mapDispatch)(withRouter(memo(Desc)));

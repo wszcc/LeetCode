@@ -4,14 +4,9 @@ export default function list(list={
     data:[]
 },action){
     switch(action.type){
-        case "list_loading":
-            return{
-                loading:true,
-                data:[]
-            }
         case "list_loadover":
             return{
-                loading:false,
+                records:action.records,
                 data:action.data
             }
     
