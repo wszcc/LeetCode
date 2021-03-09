@@ -3,14 +3,6 @@ import request from "../../../../apis";
 import { IResponse } from "../../components/LoginMain/types";
 import { ActionTypes, cancelLoginLoading, errorLogin, ILoginAction, loginLoading, successLogin } from "../actions/pwdLoginForm";
 
-
-
-/* 
-    新理解：
-        1. reducer 里面是用来处理同步任务的？比如更新 username 或者 pwd
-        2. saga 里面是用来处理异步任务的？比如下面的登录请求
-
-*/
 export function* loginSaga() {
     yield takeEvery(ActionTypes.Login, function* (action: ILoginAction) {
         yield put(loginLoading());
@@ -38,7 +30,7 @@ export function* loginSaga() {
             yield put(cancelLoginLoading());
             console.log(err);
 
-            // // 发送登录失败的 action
+            // 发送登录失败的 action
             // yield put(errorLogin())
         }
     })
