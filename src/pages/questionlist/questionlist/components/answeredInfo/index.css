@@ -1,0 +1,36 @@
+#Info_wrap{
+    display: flex;
+}
+
+#Info_wrap div{
+    margin-left: 10px;
+    border-radius: 10px;
+    height: 22px;
+    text-align: center;
+    font-size: small;
+    margin-top: 20px;
+}
+
+#solved{
+    background-color: rgb(33, 68, 143);
+    width: 130px;
+    color: white;
+}
+
+#diff{
+    background-color: rgb(185, 43, 33);
+    color: white;
+    width: 70px;
+}
+
+#mid{
+    background-color: rgb(223, 205, 42);
+    color: white;
+    width: 70px;
+}
+
+#easy{
+    background-color: rgb(50, 168, 26);
+    color: white;
+    width: 70px;
+}

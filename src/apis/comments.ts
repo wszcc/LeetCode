@@ -1,6 +1,8 @@
 import request, { Response } from './index'
 import axios from 'axios'
 import '../mock/questionIndex'
+import { storage } from '../utils/shared'
+const token = storage.get('token')
 export interface Comment {
   "commentId": string,
   "content": string,
@@ -36,7 +38,7 @@ export const sendComment = (parentId: string, userId: string, content: string) =
 
 export const setLike = (targetId: string, islike: boolean, target = "comment") => request.post("/common/like", { targetId, target, islike })
 
-export const getDescData = (questionId: string) => axios.get(`/question/start`) as Promise<Response>
+export const getDescData = (questionId: string) => axios.get(`/question/start`, { headers: { token } }) as Promise<Response>
 export const likeQuestion = (
   target: string,
   islike: boolean,
