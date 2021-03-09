@@ -1,5 +1,6 @@
 import React from 'react'
 import { Statistic, Divider, Typography } from 'antd'
+import DataEx from './dataExplain'
 import './index.scss'
 import urlDiamond from './images/diamond.png'
 import urlEye from './images/eye.png'
@@ -44,6 +45,7 @@ const Side = () => {
             </div>
             <div className="pro-skills">
                 <Title level={5}>擅长技能</Title>
+                <DataEx/>
             </div>
         </div>
     )
