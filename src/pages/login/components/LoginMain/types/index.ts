@@ -36,8 +36,15 @@ export interface IResetPwd {
 
 
 /* 响应内容 */
+
+export interface IResponse {
+    code: number;
+    message: string;
+    data: any;
+}
+
 // 登录成功
-export interface ILoginSuccessData {
+export interface ILoginSuccessReponse {
     code: number;
     data: {
         avatar: string,
@@ -46,4 +53,6 @@ export interface ILoginSuccessData {
     };
     message: 'OK';
 }
+
+
 
