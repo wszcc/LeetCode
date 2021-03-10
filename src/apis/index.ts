@@ -36,6 +36,7 @@ let isRefreshing = false
 const whiteList = new Set([
   '/user/resetToken',
   '/user/login',
+  '/user/forget',
   '/user/register',
   '/user/checkEmail',
   '/user/checkUserId',
