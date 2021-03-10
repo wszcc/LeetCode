@@ -1,4 +1,4 @@
-import { message } from "_antd@4.13.1@antd";
+import { message } from "antd";
 import { IResponse } from "../../components/LoginMain/types";
 import { ActionTypes, IAction } from "../actions/pwdLoginForm";
 
