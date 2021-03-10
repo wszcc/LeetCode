@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {Dispatch} from 'redux'
 import {connect} from 'react-redux'
 import { Card, Button } from 'antd';
@@ -9,9 +9,16 @@ import PwdLoginForm from './PwdLoginForm/pwdLoginForm'
 import USALoginForm from './USALoginForm/usaLoginForm';
 import {FormTypes} from '../../store/reducers/loginMain'
 import {IRootState} from '../../store/reducers/index'
-import { toEmailRegisterForm, toPhoneLoginForm, toPwdLoginForm, toResetPwdForm, ToUSALoginForm } from '../../store/actions/loginMain';
-import './style.scss'
+import { 
+    toEmailRegisterForm, 
+    toPhoneLoginForm, 
+    toPwdLoginForm, 
+    toResetPwdForm, 
+    ToUSALoginForm 
+} from '../../store/actions/loginMain';
 import EmailRegisterForm from './EmailRegisterForm/emailRegisterForm';
+
+import './style.scss'
 
 enum CardTitle {
     Welcome = '欢迎使用力扣',

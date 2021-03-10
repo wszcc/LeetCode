@@ -1,11 +1,11 @@
 import produce, { Immutable } from "immer"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Flags, LooseObj } from "../shared"
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import { Main_Dark, Main_Light } from "../../config/colors"
 import request, { ErrorCode, Response } from '../../apis'
 import { useParams } from "react-router"
-import classNames from 'classnames'
+
 interface Update<T> {
   (updateFn: (draft: Immutable<T>) => void): void
 }
@@ -114,6 +114,8 @@ export const useCaptcha = (
       disabled: true
     }
   });
+  
+  const timerRef = useRef<any>();
 
   // 只有所有的 deps 全部有效后，captchaBtn 才能点击
   useEffect(() => {
@@ -134,36 +136,30 @@ export const useCaptcha = (
     })
   }, [seconds, isLoading, isCountDown, isDisabled])
 
-
-  let timer: any;
-
   useEffect(() => {
+    
+    if (isCountDown) {
+      let countDownTime = initSeconds;
+      // 每隔一秒，countDownTime 减 1
+      timerRef.current = setInterval(() => {
+
+        // countDownTime 为 0 时停止倒计时
+        if (countDownTime <= 1) {
+          setSeconds(initSeconds);
+          setIsCountDown(false);
+          setIsDisabled(false)
+          clearInterval(timerRef.current);
+          
+          return;
+        }
+        countDownTime -= 1;
+        setSeconds(countDownTime);
+      }, 1000);
+    } 
     return () => {
-      clearInterval(timer)
+      clearInterval(timerRef.current);
     }
-  });
-
-  const startCountDown = () => {
-
-    // 倒计时60秒
-    // setSeconds(5);
-
-    let countDownTime = initSeconds;
-    // 每隔一秒，countDownTime 减 1
-    timer = setInterval(() => {
-
-      // countDownTime 为 0 时停止倒计时
-      if (countDownTime <= 1) {
-        setSeconds(initSeconds);
-        setIsCountDown(false);
-        setIsDisabled(false)
-        clearInterval(timer);
-        return;
-      }
-      countDownTime -= 1;
-      setSeconds(countDownTime);
-    }, 1000);
-  }
+  }, [isCountDown])
 
   // 点击获取验证码
   const getCaptcha = () => {
@@ -171,8 +167,14 @@ export const useCaptcha = (
     if (type === 'email') {
       const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
       if (!reg.test(sendTarget)) {
+        if (sendTarget === '') {
+          message.info('请输入邮箱');
+        }
         return;
       }
+    } else {
+      console.log('手机注册登录接口还未开通');
+      return;
     }
     // 按钮 loading：正在发送请求
     setIsLoading(true);
@@ -187,38 +189,12 @@ export const useCaptcha = (
       setIsLoading(false);
       // 开始倒计时
       setIsCountDown(true);
-      startCountDown();
       console.log(reponse);
 
     }).catch(reason => {
       console.log(reason);
     })
-    
-
-    // setTimeout(() => {
-    //   // 按钮停止 loading：请求结束 
-    //   setIsLoading(false);
-
-    //   if (!isLoading) {
-    //     // 开始倒计时
-    //     setIsCountDown(true);
-
-    //     startCountDown();
-    //   }
-
-    // }, 1000);
   }
 
   return [getCaptcha, btnStatus];
-}
-
-// deps 用来存放交互过程中可能会改变的状态
-const useClassNames = (baseClassName: string, deps: any[]): string => {
-  useEffect(() => {
-    classNames(baseClassName, {
-
-    })
-  }, deps)
-
-  return ''
 }

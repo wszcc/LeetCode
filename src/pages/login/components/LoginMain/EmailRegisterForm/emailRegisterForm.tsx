@@ -1,11 +1,26 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import { Form, Input, Button, message } from 'antd'
-import request from '../../../../../apis/index'
-import './style.scss';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux'
+import { Form, Input, Button } from 'antd'
 import { useCaptcha } from '../../../../../utils/hooks';
+import { IEmailRegisterParams, ILoginParams, Method } from '../types';
+import { IRootState } from '../../../store/reducers';
+import { register } from '../../../store/actions/emailRegisterForm';
+import { useHistory } from 'react-router';
+import { login } from '../../../store/actions/pwdLoginForm';
+import './style.scss';
 
+interface IMappedState {
+    isLoading: boolean;
+    status: 0 | 1 | 2 | 3;
+}
 
-interface IBaseProps {
+interface IMappedDispacth {
+    register: (params: IEmailRegisterParams) => void;
+    login: (params: ILoginParams) => void;
+}
+
+interface IBaseProps extends IMappedState, IMappedDispacth {
     children?: React.ReactNode;
     style?: CSSProperties;
 }
@@ -29,7 +44,21 @@ interface IValueObj {
 }
 
 const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
-    const { style } = props;
+
+    // const history = useHistory();
+
+    const {
+        style,
+
+        // state
+        isLoading,
+        status,
+
+        // dispacth
+        register
+    } = props;
+
+
 
     const [isPwdInputOnBlur, setIsPwdInputOnBlur] = useState(false);
     const [isEmailInputOnBlur, setIsEmailInputOnBlur] = useState(false);
@@ -40,25 +69,27 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
 
 
     const onFinish = (values: IFormValues) => {
-        const { email, password, captcha } = values;
-        console.log(email, password, captcha);
 
-        request.post('/user/register', {
+        const { email, password, captcha } = values;
+
+        const parmas: IEmailRegisterParams = {
             registerBody: email,
             password,
             authCode: Number(captcha),
-            method: 'email'
+            method: Method.Email
+        }
 
-        }).then(value => {
-            message.success('注册成功！')
-        }).catch(reason => {
-            console.log(reason);
-        });
+        // console.log(parmas);
+
+        register(parmas);
     }
 
+    const onFinishFailed = (obj: any) => {
+        console.log(obj);
+    }
     const onValuesChange = (valueObj: IValueObj) => {
         const changeType = Object.keys(valueObj)[0];
-        switch(changeType) {
+        switch (changeType) {
             case InputType.Email:
                 const email = valueObj.email as string;
                 setEmail(email)
@@ -74,7 +105,20 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
         }
     }
 
-    const [getCaptcha, IBtnStatus] = useCaptcha('email', email, 5, []);
+
+    useEffect(() => {
+        // 注册的状态
+        // 1：自动登录
+        if (status === 1) {
+            login({
+                registerBody: email,
+                password: password,
+                method: Method.Email
+            });
+        }
+    }, [status])
+
+    const [getCaptcha, IBtnStatus] = useCaptcha('email', email, 60, []);
 
     return (
         <Form
@@ -87,8 +131,10 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
             }}
             onValuesChange={onValuesChange}
             onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
         >
             <Form.Item
+                // ref={emailItemRef}
                 className='email-register-form-item email-register-email-item'
                 name='email'
                 rules={[
@@ -106,8 +152,8 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                             return Promise.resolve();
                         },
                     })
-
                 ]}
+
                 validateTrigger={['onChange', 'onBlur']}
             >
                 <Input
@@ -171,7 +217,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                         {...IBtnStatus.btnProps}
                     >
                         {IBtnStatus.children}
-                </Button>
+                    </Button>
                 </Form.Item>
             </div>
 
@@ -179,6 +225,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                 className='email-register-form-item email-register-btn-item'
             >
                 <Button
+                    loading={isLoading}
                     className='email-register-input email-register-btn-input'
                     type='primary'
                     htmlType='submit'
@@ -186,13 +233,17 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                     注册
                 </Button>
             </Form.Item>
-
-
-
-
-
         </Form>
     )
 }
 
-export default EmailRegisterForm;
+const mapStateToProps = (state: IRootState): IMappedState => ({
+    isLoading: state.emailRegisterForm.isLoading,
+    status: state.emailRegisterForm.status
+});
+const mapDispacthToProps = (dispacth: Dispatch): IMappedDispacth => ({
+    register: (params: IEmailRegisterParams) => dispacth(register(params)),
+    login: (params: ILoginParams) => dispacth(login(params))
+});
+
+export default connect(mapStateToProps, mapDispacthToProps)(EmailRegisterForm);

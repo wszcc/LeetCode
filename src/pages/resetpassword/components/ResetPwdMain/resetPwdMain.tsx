@@ -1,6 +1,7 @@
 import { Card, Radio } from 'antd'
 import React, { useState } from 'react';
-import ResetForm, {ResetFormType} from './ResetForm/resetForm'
+import ResetForm, {ResetFormTypes} from './ResetForm/resetForm'
+import './style.scss'
 
 const ResetPwdMain: React.FC = () => {
 
@@ -15,7 +16,7 @@ const ResetPwdMain: React.FC = () => {
             <div className='resetpwd-window-main-hint-warp'>
                 <p className='resetpwd-window-main-hint'>
                     {isByPhone ? '忘记密码了？请输入您的11位手机号，我们会发送短信验证码到您手机。' : 
-                                       '忘记密码了？请输入您的电子邮箱，我们会发送重设邮件到您的邮箱。'}
+                                       '忘记密码了？请输入您的电子邮箱，我们会发送邮件验证码到您的邮箱。'}
                 </p>
             </div>
 
@@ -27,8 +28,8 @@ const ResetPwdMain: React.FC = () => {
                 <Radio value={false}>用邮箱重设</Radio>
             </Radio.Group>
  
-            <ResetForm type={ResetFormType.ByPhoneReset} style={{display: `${isByPhone ? 'block' : 'none'}`}}/>
-            <ResetForm type={ResetFormType.ByEmailReset} style={{display: `${isByPhone ? 'none' : 'block'}`}}/>
+            <ResetForm type={ResetFormTypes.ByPhoneReset} style={{display: `${isByPhone ? 'block' : 'none'}`}}/>
+            <ResetForm type={ResetFormTypes.ByEmailReset} style={{display: `${isByPhone ? 'none' : 'block'}`}}/>
            
         </Card>
     )

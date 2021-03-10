@@ -36,6 +36,7 @@ let isRefreshing = false
 const whiteList = new Set([
   '/user/resetToken',
   '/user/login',
+  '/user/forget',
   '/user/register',
   '/user/checkEmail',
   '/user/checkUserId',
@@ -142,7 +143,11 @@ request.interceptors.response.use(
         return res.data
       }
       default:
-        message.info(CodeMap[code])
+        if (code === 400) {
+          console.log(CodeMap[code]);
+        } else {
+          message.info(CodeMap[code])
+        }
         return {
           code: code,
           message: res.data.message,

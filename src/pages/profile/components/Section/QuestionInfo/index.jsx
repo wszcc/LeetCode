@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { Statistic } from 'antd'
+import Correct from './Correct'
 import {proReqQuestion} from '../../../store/actions/proReqHistory_action'
 import './index.scss'
 
@@ -17,7 +18,7 @@ const QuestionInfo = (props) => {
             'diff|1-403':1
         }
     })
-
+    
 
     return(
         <div className="pro-problem">
@@ -33,6 +34,7 @@ const QuestionInfo = (props) => {
                     <Statistic title="困难" value={data.data.diff} suffix="/100" />
                 </div>
             </div>
+            <Correct/>
         </div>
     )
 }

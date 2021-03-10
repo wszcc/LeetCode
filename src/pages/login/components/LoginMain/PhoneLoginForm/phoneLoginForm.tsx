@@ -1,4 +1,4 @@
-import { Form, Button, message } from 'antd';
+import { Form, Button } from 'antd';
 import React, { CSSProperties, useEffect, useState } from 'react';
 import PhoneInput, { IPhoneNumber } from './PhoneInput/phoneInput'
 import CaptchaInput, { ICaptcha } from './CaptchaInput/captchaInput'
@@ -70,8 +70,6 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
 
         // message.error('验证码错误，请重新验证');
         // console.log(values);
-
-
     }
 
 

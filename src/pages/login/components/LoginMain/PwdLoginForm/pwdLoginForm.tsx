@@ -1,9 +1,12 @@
 
 import { Form, Button, Input } from 'antd';
-import React, { CSSProperties } from 'react';
-import request from '../../../../../apis';
-import { storage } from '../../../../../utils/shared';
+import React, { CSSProperties, useEffect } from 'react';
+import {Dispatch} from 'redux'
+import {connect} from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { login } from '../../../store/actions/pwdLoginForm';
 import { ILoginParams, Method } from '../types';
+import { IRootState } from '../../../store/reducers';
 import './style.scss'
 
 
@@ -12,7 +15,16 @@ interface IFormValues {
     password: string
 }
 
-interface IBaseProps {
+interface IMappedState {
+    isLoading: boolean;
+    status: 0 | 1 | 2;
+}
+
+interface IMappedDispacth {
+    login: (params: ILoginParams) => void;
+}
+
+interface IBaseProps extends IMappedState, IMappedDispacth {
     children?: React.ReactNode;
     style?: CSSProperties;
 }
@@ -20,6 +32,23 @@ interface IBaseProps {
 
 const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
     const [form] = Form.useForm();
+    let history = useHistory();
+
+    
+    const {
+        // state
+        isLoading,
+        status,
+        // dispatch
+        login
+    } = props;
+
+    useEffect(() => {
+        if (status === 1) {
+            history.replace('/questionlist')
+        }
+    }, [status])
+
 
     // 将表单填入的信息提交
     const onFinish = (values: IFormValues) => {
@@ -29,20 +58,13 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
             registerBody: username,
             password,
             method: Method.Email
-        }   
-
-        request.post('/user/login', params).then(value => {
-            console.log(value);
-            console.log(storage.get('token'));
-            
-        }).catch(err => {
-            console.log(err);
-        })
+        } 
+        login(params);  
     }
 
-    const onValuesChange = (value: {username: string} | {password: string}) => {
+    // const onValuesChange = (value: {username: string} | {password: string}) => {
         
-    }
+    // }
    
     return (
         <Form
@@ -54,7 +76,7 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
                 password: ''
             }}
             onFinish={onFinish}
-            onValuesChange={onValuesChange}
+            // onValuesChange={onValuesChange}
             style={props.style}
         >
             <Form.Item
@@ -93,7 +115,7 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
                 className='pwd-login-form-item primary-button-item'
             >
                 <Button 
-                    // loading={true}
+                    loading={isLoading}
                     className='primary-button' 
                     type='primary' 
                     htmlType='submit'
@@ -106,6 +128,14 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
         </Form>
     )
 }
+const mapStateToProps = (state: IRootState): IMappedState => ({
+    isLoading: state.pwdLoginForm.isLoading,
+    status: state.pwdLoginForm.status
+});
 
-export default PhoneLoginForm;
+const mapDispacthToProps = (dispatch: Dispatch): IMappedDispacth => ({
+    login: (params: ILoginParams) => dispatch(login(params)),
+});
+
+export default connect(mapStateToProps, mapDispacthToProps)(PhoneLoginForm);
 

@@ -27,8 +27,8 @@ export interface IGetCaptchaParams {
 }
 
 // 忘记密码
-export interface IResetPwd {
-    forgetBody: string;
+export interface IResetPwdParams {
+    forGetBody: string;
     newPassword: string;
     code: string;
     method: Method;
@@ -36,14 +36,23 @@ export interface IResetPwd {
 
 
 /* 响应内容 */
-// 登录成功
-export interface ILoginSuccessData {
+
+export interface IResponse {
     code: number;
-    data: {
-        avatar: string,
-        nickname: string,
-        sex: '1' | '0'
-    };
-    message: 'OK';
+    message: string;
+    data: any;
 }
+
+// 登录成功
+// export interface ILoginSuccessReponse {
+//     code: number;
+//     data: {
+//         avatar: string,
+//         nickname: string,
+//         sex: '1' | '0'
+//     };
+//     message: 'OK';
+// }
+
+
 
