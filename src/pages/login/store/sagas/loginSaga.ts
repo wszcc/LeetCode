@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import request from "../../../../apis";
-import { IResponse } from "../../components/LoginMain/types";
+import {IResponse } from "../../components/LoginMain/types";
 import { ActionTypes, cancelLoginLoading, errorLogin, ILoginAction, loginLoading, successLogin } from "../actions/pwdLoginForm";
 
 export function* loginSaga() {
@@ -22,16 +22,11 @@ export function* loginSaga() {
                 // 登录成功
 
                 // 发送登录成功的 action
-                yield put(successLogin());
+                yield put(successLogin(res));
             }
-
-
         } catch (err) {
             yield put(cancelLoginLoading());
             console.log(err);
-
-            // 发送登录失败的 action
-            // yield put(errorLogin())
         }
     })
 }
