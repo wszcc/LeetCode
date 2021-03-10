@@ -1,5 +1,5 @@
 import React from 'react'
-import ResetPwdWindow from './pages/validation/components/ResetPwdWindow/resetPwdWindow'
+import ResetPwdWindow from './components/ResetPwdWindow/resetPwdWindow'
 
 const resetPassword = () =>{
     return <div className='resetpassword'>
