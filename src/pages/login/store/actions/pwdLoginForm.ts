@@ -1,4 +1,4 @@
-import { ILoginParams } from "../../components/LoginMain/types";
+import { ILoginParams, IResponse } from "../../components/LoginMain/types";
 
 export enum ActionTypes {
     
@@ -34,10 +34,16 @@ interface ILoginActionCreator {
     };
 }
 
+export interface ISuccessLoginAction {
+    type: ActionTypes.SuccessLogin;
+    payload: IResponse;
+}
 
 
 export const login: ILoginActionCreator = (payload) => ({ type: ActionTypes.Login, payload });
 export const errorLogin: IActionCreator = () => ({ type: ActionTypes.ErrorLogin });
-export const successLogin: IActionCreator = () => ({ type: ActionTypes.SuccessLogin });
+
+export const successLogin = (payload: IResponse): ISuccessLoginAction => ({ type: ActionTypes.SuccessLogin, payload });
+
 export const loginLoading: IActionCreator = () => ({ type: ActionTypes.LoginLoading });
 export const cancelLoginLoading: IActionCreator = () => ({ type: ActionTypes.CancelLoginLoading });
