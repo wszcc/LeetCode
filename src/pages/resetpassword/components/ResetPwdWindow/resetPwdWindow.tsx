@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react"
 import ResetPwdMain from '../ResetPwdMain/resetPwdMain'
-import './index.scss'
+import './style.scss'
 
 
 

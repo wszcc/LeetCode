@@ -1,5 +1,6 @@
 .resetpwd-window-main {
     border-radius: 10px;
+    height: 100%;
     .ant-card-head-title {
         font-size: 28px;
         font-weight: 500;
@@ -30,6 +31,21 @@
         .ant-radio-wrapper {
             color: #000000A6;
             font-weight: bold !important;
+        }
+    }
+    .ant-form {
+        width: 320px;
+        margin: 0 auto 0 auto;
+        .ant-form-item-explain {
+            font-size: 12px;
+        }
+        
+        .ant-btn,
+        .ant-form-item,
+        .ant-input-affix-wrapper,
+        #captcha {
+            min-height: 38px;
+            border-radius: 5px;
         }
     }
 }
