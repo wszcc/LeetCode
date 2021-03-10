@@ -1,13 +1,13 @@
 
-import { Form, Button, Input, message } from 'antd';
+import { Form, Button, Input } from 'antd';
 import React, { CSSProperties, useEffect } from 'react';
 import {Dispatch} from 'redux'
 import {connect} from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { login } from '../../../store/actions/pwdLoginForm';
 import { ILoginParams, Method } from '../types';
-import './style.scss'
 import { IRootState } from '../../../store/reducers';
+import './style.scss'
 
 
 interface IFormValues {
@@ -17,6 +17,7 @@ interface IFormValues {
 
 interface IMappedState {
     isLoading: boolean;
+    status: 0 | 1 | 2;
 }
 
 interface IMappedDispacth {
@@ -37,10 +38,16 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
     const {
         // state
         isLoading,
-
+        status,
         // dispatch
         login
     } = props;
+
+    useEffect(() => {
+        if (status === 1) {
+            history.replace('/questionlist')
+        }
+    }, [status])
 
 
     // 将表单填入的信息提交
@@ -55,9 +62,9 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
         login(params);  
     }
 
-    const onValuesChange = (value: {username: string} | {password: string}) => {
+    // const onValuesChange = (value: {username: string} | {password: string}) => {
         
-    }
+    // }
    
     return (
         <Form
@@ -69,7 +76,7 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
                 password: ''
             }}
             onFinish={onFinish}
-            onValuesChange={onValuesChange}
+            // onValuesChange={onValuesChange}
             style={props.style}
         >
             <Form.Item
@@ -123,6 +130,7 @@ const PhoneLoginForm: React.FC<IBaseProps> = (props) => {
 }
 const mapStateToProps = (state: IRootState): IMappedState => ({
     isLoading: state.pwdLoginForm.isLoading,
+    status: state.pwdLoginForm.status
 });
 
 const mapDispacthToProps = (dispatch: Dispatch): IMappedDispacth => ({

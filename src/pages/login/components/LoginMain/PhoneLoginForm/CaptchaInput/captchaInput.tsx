@@ -1,5 +1,5 @@
 import { Input, Button } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useCaptcha } from '../../../../../../utils/hooks';
 import './style.scss'
 
@@ -34,7 +34,7 @@ const CaptchaInput: React.FC<BaseProps> = (props) => {
     } = props;
 
 
-    const [getCaptcha, btnStatus] = useCaptcha('email', '909397116@qq.com', 5, [isPhoneValid]);
+    const [getCaptcha, btnStatus] = useCaptcha('phone', '#', 60, [isPhoneValid]);
 
 
 

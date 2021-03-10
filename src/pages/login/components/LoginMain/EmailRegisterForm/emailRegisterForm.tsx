@@ -1,22 +1,23 @@
-import React, { CSSProperties, useEffect, useRef, useState } from 'react'
-import {Dispatch} from 'redux';
-import {connect} from 'react-redux'
+import React, { CSSProperties, useEffect, useState } from 'react'
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux'
 import { Form, Input, Button } from 'antd'
-import request from '../../../../../apis/index'
 import { useCaptcha } from '../../../../../utils/hooks';
-
-import './style.scss';
-import { IEmailRegisterParams, Method } from '../types';
+import { IEmailRegisterParams, ILoginParams, Method } from '../types';
 import { IRootState } from '../../../store/reducers';
 import { register } from '../../../store/actions/emailRegisterForm';
-
+import { useHistory } from 'react-router';
+import { login } from '../../../store/actions/pwdLoginForm';
+import './style.scss';
 
 interface IMappedState {
     isLoading: boolean;
+    status: 0 | 1 | 2 | 3;
 }
 
 interface IMappedDispacth {
     register: (params: IEmailRegisterParams) => void;
+    login: (params: ILoginParams) => void;
 }
 
 interface IBaseProps extends IMappedState, IMappedDispacth {
@@ -43,11 +44,16 @@ interface IValueObj {
 }
 
 const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
-    const { 
+
+    // const history = useHistory();
+
+    const {
         style,
-        
+
         // state
         isLoading,
+        status,
+
         // dispacth
         register
     } = props;
@@ -71,7 +77,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
             password,
             authCode: Number(captcha),
             method: Method.Email
-        } 
+        }
 
         // console.log(parmas);
 
@@ -83,7 +89,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
     }
     const onValuesChange = (valueObj: IValueObj) => {
         const changeType = Object.keys(valueObj)[0];
-        switch(changeType) {
+        switch (changeType) {
             case InputType.Email:
                 const email = valueObj.email as string;
                 setEmail(email)
@@ -98,6 +104,19 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                 break;
         }
     }
+
+
+    useEffect(() => {
+        // 注册的状态
+        // 1：自动登录
+        if (status === 1) {
+            login({
+                registerBody: email,
+                password: password,
+                method: Method.Email
+            });
+        }
+    }, [status])
 
     const [getCaptcha, IBtnStatus] = useCaptcha('email', email, 60, []);
 
@@ -134,7 +153,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                         },
                     })
                 ]}
-                
+
                 validateTrigger={['onChange', 'onBlur']}
             >
                 <Input
@@ -198,7 +217,7 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
                         {...IBtnStatus.btnProps}
                     >
                         {IBtnStatus.children}
-                </Button>
+                    </Button>
                 </Form.Item>
             </div>
 
@@ -219,10 +238,12 @@ const EmailRegisterForm: React.FC<IBaseProps> = (props) => {
 }
 
 const mapStateToProps = (state: IRootState): IMappedState => ({
-    isLoading: state.emailRegisterForm.isLoading
+    isLoading: state.emailRegisterForm.isLoading,
+    status: state.emailRegisterForm.status
 });
 const mapDispacthToProps = (dispacth: Dispatch): IMappedDispacth => ({
-    register: (params: IEmailRegisterParams) => dispacth(register(params))
+    register: (params: IEmailRegisterParams) => dispacth(register(params)),
+    login: (params: ILoginParams) => dispacth(login(params))
 });
 
 export default connect(mapStateToProps, mapDispacthToProps)(EmailRegisterForm);
